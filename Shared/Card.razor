@@ -1,0 +1,76 @@
+﻿@using Models;
+
+<div 
+    class="
+        card 
+        border-0 
+        @GetCardState()"
+>
+    <div class="card-body p-0">
+        <div class="card-front border @GetCorrectnessBorder()">
+            <h1>@Word.Spanish</h1>
+            <input type="text" class="my-2" @bind="CurrentGuess"/>
+            <button class="btn btn-secondary" @onclick="Guess">Guess</button>
+        </div>
+        <div class="card-back d-flex align-items-center justify-content-center">
+            <h2>@Word.English</h2>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public BasicWord Word { get; set; }
+
+    private bool? _isCorrect;
+    public bool? IsCorrect
+    {
+        get { return _isCorrect; }
+        set
+        {
+            _isCorrect = value;
+            GetCorrectnessClass();
+            GetCorrectnessBorder();
+        }
+    }
+    public string CurrentGuess { get; set; }
+
+
+    private void Guess()
+    {
+        IsCorrect = CurrentGuess == Word.English;
+    }
+
+    private string GetCardState()
+    {
+        if (IsCorrect.HasValue)
+        {
+            return IsCorrect.Value ? "card-is-flipped" : String.Empty;
+        }
+        return String.Empty;
+    }
+
+    private string GetCorrectnessClass()
+    {
+        if (IsCorrect.HasValue)
+        {
+            return IsCorrect.Value ? "card-is-correct" : "card-is-wrong";
+        }
+        return String.Empty;
+    }
+
+    private string GetCorrectnessBorder()
+    {
+        if (IsCorrect.HasValue)
+        {
+            return IsCorrect.Value ? "border-success" : "border-danger";
+        }
+        return "border-primary";
+    }
+
+
+
+
+}

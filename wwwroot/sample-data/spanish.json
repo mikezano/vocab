@@ -1,0 +1,47 @@
+[
+  {
+    "spanish": "pantano",
+    "english": "swamp",
+    "isGuessed":  false
+  },
+  {
+    "spanish": "esmokin",
+    "english": "tuxedo",
+    "isGuessed": false
+  },
+  {
+    "spanish": "azotea",
+    "english": "rooftop",
+    "isGuessed": false
+  },
+  {
+    "spanish": "jornal",
+    "english": "wage",
+    "isGuessed": false
+  },
+  {
+    "spanish": "cuerva",
+    "english": "crow",
+    "isGuessed": false
+  },
+  {
+    "spanish": "otorgan",
+    "english": "grant",
+    "isGuessed": false
+  },
+  {
+    "spanish": "funda",
+    "english": "sheath",
+    "isGuessed": false
+  },
+  {
+    "spanish": "piedad",
+    "english": "piety",
+    "isGuessed": false
+  },
+  {
+    "spanish": "piedad",
+    "english": "piety",
+    "isGuessed": false
+  }
+]

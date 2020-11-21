@@ -1,0 +1,20 @@
+﻿@using Models;
+
+<div class="cards">
+    @if (Words.Count > 0)
+    {
+
+        @foreach (var word in Words)
+        {
+            <Card Word="word"></Card>
+        }
+
+    }
+
+</div>
+
+@code {
+
+    [Parameter]
+    public List<BasicWord> Words { get; set; }
+}
