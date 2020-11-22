@@ -33,7 +33,7 @@
 }
 
 .card-front{
-    border-size:1rem;
+    border-width:1rem;
     transition: border 0.5s ease-in;
 }
 

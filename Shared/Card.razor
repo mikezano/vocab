@@ -4,9 +4,10 @@
     class="
         card 
         border-0 
+        m-1
         @GetCardState()"
 >
-    <div class="card-body p-0">
+    <div class="card-body p-0 ">
         <div class="card-front border @GetCorrectnessBorder()">
             <h1>@Word.Spanish</h1>
             <input type="text" class="my-2" @bind="CurrentGuess"/>
@@ -23,6 +24,10 @@
 
     [Parameter]
     public BasicWord Word { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public EventCallback<int> OnCorrect { get; set; }
 
     private bool? _isCorrect;
     public bool? IsCorrect
@@ -41,6 +46,10 @@
     private void Guess()
     {
         IsCorrect = CurrentGuess == Word.English;
+        if (IsCorrect.Value)
+        {
+            OnCorrect.InvokeAsync(Id);
+        }
     }
 
     private string GetCardState()

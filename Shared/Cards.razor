@@ -4,9 +4,9 @@
     @if (Words.Count > 0)
     {
 
-        @foreach (var word in Words)
+        @for (int i = 0; i < Words.Count; i++)
         {
-            <Card Word="word"></Card>
+            <Card Id="i" Word="Words[i]" OnCorrect="OnCorrect"></Card>
         }
 
     }
@@ -17,4 +17,13 @@
 
     [Parameter]
     public List<BasicWord> Words { get; set; }
+
+    public void OnCorrect(int index)
+    {
+        Console.WriteLine(index);
+        Words.RemoveAt(index);
+        //Words.RemoveAt(Words.Count - 1);
+        //Words.Add(new BasicWord { English = "yes", Spanish = "no" });
+        Console.WriteLine("Length" + Words.Count);
+    }
 }
