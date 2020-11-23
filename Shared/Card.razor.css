@@ -11,15 +11,22 @@
     width: 100%;
     height: 100%;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    transition: transform 1s;
+    opacity:1;
     transform-style: preserve-3d;
 }
 
 .card-is-flipped .card-body {
-    transform: rotateY(180deg);
-    transition: transform 0.5s ease-in .5s;
+    animation: flip-card 0.5s ease-in .2s forwards;
 }
 
+
+.card-is-resetting .card-body {
+    animation: reset-card 0.5s ease-in forwards;
+}
+
+.card-is-unflipped .card-body{
+    animation: unflip-card 0.5s ease-in forwards;
+}
 
 .card-front, .card-back {
     position: absolute;
@@ -33,7 +40,7 @@
 }
 
 .card-front{
-    border-width:1rem;
+    border-width:.2rem !important;
     transition: border 0.5s ease-in;
 }
 

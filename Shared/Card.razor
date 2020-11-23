@@ -5,18 +5,26 @@
         card 
         border-0 
         m-1
-        @GetCardState()"
+        @GetCardState()
+        @OnFadeForNextClass
+        @OnFinalClass"
 >
-    <div class="card-body p-0 ">
-        <div class="card-front border @GetCorrectnessBorder()">
-            <h1>@Word.Spanish</h1>
-            <input type="text" class="my-2" @bind="CurrentGuess"/>
-            <button class="btn btn-secondary" @onclick="Guess">Guess</button>
-        </div>
-        <div class="card-back d-flex align-items-center justify-content-center">
-            <h2>@Word.English</h2>
-        </div>
-    </div>
+    <CallbackOnCssAnimationEnd CssAnimationName="flip-card" OnCssAnimationCompleted="OnCorrectGuess">
+        <CallbackOnCssAnimationEnd CssAnimationName="reset-card" OnCssAnimationCompleted="OnFadeForNext">
+            <CallbackOnCssAnimationEnd CssAnimationName="unflip-card" OnCssAnimationCompleted="OnFinal">
+                <div class="card-body p-0 ">
+                    <div class="card-front border @GetCorrectnessBorder()">
+                        <h1>@Word.Spanish</h1>
+                        <input type="text" class="my-2" @bind="CurrentGuess" />
+                        <button class="btn btn-secondary" @onclick="Guess">Guess</button>
+                    </div>
+                    <div class="card-back d-flex align-items-center justify-content-center">
+                        <h2>@Word.English</h2>
+                    </div>
+                </div>
+            </CallbackOnCssAnimationEnd>
+        </CallbackOnCssAnimationEnd>
+    </CallbackOnCssAnimationEnd>
 </div>
 
 
@@ -28,6 +36,11 @@
     public int Id { get; set; }
     [Parameter]
     public EventCallback<int> OnCorrect { get; set; }
+
+    public int Duration { get; set; } = 200;
+
+    public string OnFadeForNextClass { get; set; } = String.Empty;
+    public string OnFinalClass { get; set; } = String.Empty;
 
     private bool? _isCorrect;
     public bool? IsCorrect
@@ -42,14 +55,38 @@
     }
     public string CurrentGuess { get; set; }
 
+    public async Task OnCorrectGuess(string animationName)
+    {
+        Console.WriteLine("Invoke next call " + animationName);
+        if (IsCorrect.Value)
+        {
+            CurrentGuess = "";
+            OnFadeForNextClass = "card-is-resetting";
+            await OnCorrect.InvokeAsync(Id);
+        }
+
+    }
+
+    public async Task OnFadeForNext(string cssPropertyName) {
+        OnFinalClass = "card-is-unflipped";
+    }
+
+    public async Task OnFinal(string animationName)
+    {
+        Console.WriteLine("OnFinal " + animationName);
+    }
 
     private void Guess()
     {
         IsCorrect = CurrentGuess == Word.English;
-        if (IsCorrect.Value)
-        {
-            OnCorrect.InvokeAsync(Id);
-        }
+        //if (IsCorrect.Value)
+        //{
+        //    Console.WriteLine("Invoke animation");
+        //}
+        //else
+        //{
+        //    Console.WriteLine("No match yet");
+        //}
     }
 
     private string GetCardState()

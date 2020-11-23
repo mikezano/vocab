@@ -1,29 +1,30 @@
 ﻿@page "/vocab";
 @inject HttpClient Http
+@inject AppState AppState
 @using Models;
 
 <h1>Vocab</h1>
-<Cards Words="@words"></Cards>
+<Cards Words="@WordSet"></Cards>
 <div class="d-flex justify-content-center mt-5">
-    <button class="btn btn-success" @onclick="Add">Add</button>
     <button class="btn btn-primary" @onclick="Reshuffle">Re-Shuffle</button>
 </div>
 
 
+
+
 @code{
 
-    List<BasicWord> words = new List<BasicWord>();
+    private List<BasicWord> Words = new List<BasicWord>();
+    private List<BasicWord> WordSet = new List<BasicWord>();
     int correctCount = 0;
     protected override async Task OnInitializedAsync()
     {
-        words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
+        Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
+
+        AppState.SetWords(Words);
+        WordSet = AppState.GetWordSet();
     }
 
-    private void Add()
-    {
-        BasicWord word = words[0];
-        words.Add(word);
-    }
 
     private void Reshuffle()
     {

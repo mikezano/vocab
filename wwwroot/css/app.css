@@ -48,3 +48,35 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+@keyframes flip-card {
+    from {
+        transform: rotateY(0);
+    }
+
+    to {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes reset-card {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes unflip-card {
+    from {
+        transform: rotateY(180deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: rotateY(0);
+        opacity: 1;
+    }
+}
