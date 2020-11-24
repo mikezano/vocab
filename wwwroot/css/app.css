@@ -49,7 +49,7 @@ a, .btn-link {
         top: 0.5rem;
     }
 
-@keyframes flip-card {
+@keyframes answer-reveal {
     from {
         transform: rotateY(0);
     }
@@ -59,24 +59,40 @@ a, .btn-link {
     }
 }
 
-@keyframes reset-card {
+@keyframes half-flip-start {
     from {
-        opacity: 1;
+        transform: rotateY(180deg);
     }
 
     to {
-        opacity: 0;
+        transform: rotateY(270deg);
     }
 }
 
-@keyframes unflip-card {
+@keyframes half-flip-end {
     from {
-        transform: rotateY(180deg);
-        opacity: 0;
+        transform: rotateY(270deg);
     }
 
     to {
-        transform: rotateY(0);
-        opacity: 1;
+        transform: rotateY(360deg);
     }
+}
+
+@keyframes border-danger-animate {
+    0%, 100%{      
+        border: 1rem solid #ddd;
+    }
+
+    50% {border: 1rem solid red;}
+
+/*    10%{transform:translateX(-.6rem);}
+    20%{transform:translateX(.6rem);}*/
+    30%{transform:translateX(-.4rem);}
+    40%{transform:translateX(.4rem);}
+    50%{transform:translateX(-.2rem);}
+    60%{transform:translateX(.2rem);}
+    70%{transform:translateX(-.1rem);}
+    80%{transform:translateX(.1rem);}
+    90%{transform:translateX(0);}
 }

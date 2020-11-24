@@ -4,24 +4,24 @@
     class="
         card 
         border-0 
-        m-1
-        @GetCardState()
-        @OnFadeForNextClass
-        @OnFinalClass"
+        m-3
+        @CardAnimationClass
+        @CardHalfFlipStart
+        @CardHalfFlipEnd"
 >
-    <CallbackOnCssAnimationEnd CssAnimationName="flip-card" OnCssAnimationCompleted="OnCorrectGuess">
-        <CallbackOnCssAnimationEnd CssAnimationName="reset-card" OnCssAnimationCompleted="OnFadeForNext">
-            <CallbackOnCssAnimationEnd CssAnimationName="unflip-card" OnCssAnimationCompleted="OnFinal">
-                <div class="card-body p-0 ">
-                    <div class="card-front border @GetCorrectnessBorder()">
-                        <h1>@Word.Spanish</h1>
-                        <input type="text" class="my-2" @bind="CurrentGuess" />
-                        <button class="btn btn-secondary" @onclick="Guess">Guess</button>
+    <CallbackOnCssAnimationEnd CssAnimationName="answer-reveal" OnCssAnimationCompleted="OnRevealComplete">
+        <CallbackOnCssAnimationEnd CssAnimationName="half-flip-start" OnCssAnimationCompleted="OnHalfFlipStartComplete">
+            <CallbackOnCssAnimationEnd CssAnimationName="half-flip-end" OnCssAnimationCompleted="OnHalfFlipEndComplete">
+                    <div class="card-body p-0">
+                        <div class="card-front">
+                            <h1 class="card-word border-bottom border-danger bg-light">@Word.Spanish</h1>
+                            <input type="text" class="card-input my-2" @bind="CurrentGuess" />
+                            <button class="mt-1 btn btn-info" @onclick="Guess">Guess</button>
+                        </div>
+                        <div class="card-back d-flex align-items-center justify-content-center">
+                            <h2>@Word.English</h2>
+                        </div>
                     </div>
-                    <div class="card-back d-flex align-items-center justify-content-center">
-                        <h2>@Word.English</h2>
-                    </div>
-                </div>
             </CallbackOnCssAnimationEnd>
         </CallbackOnCssAnimationEnd>
     </CallbackOnCssAnimationEnd>
@@ -37,86 +37,61 @@
     [Parameter]
     public EventCallback<int> OnCorrect { get; set; }
 
-    public int Duration { get; set; } = 200;
+    public string CardAnimationClass { get; set; } = String.Empty;
+    public string CardHalfFlipStart { get; set; } = String.Empty;
+    public string CardHalfFlipEnd { get; set; } = String.Empty;
 
-    public string OnFadeForNextClass { get; set; } = String.Empty;
-    public string OnFinalClass { get; set; } = String.Empty;
+    ElementReference CardFront;
 
-    private bool? _isCorrect;
-    public bool? IsCorrect
-    {
-        get { return _isCorrect; }
-        set
-        {
-            _isCorrect = value;
-            GetCorrectnessClass();
-            GetCorrectnessBorder();
-        }
-    }
+    public bool? IsCorrect { get; set; }
     public string CurrentGuess { get; set; }
 
-    public async Task OnCorrectGuess(string animationName)
+    public async Task OnRevealComplete(string animationName)
     {
         Console.WriteLine("Invoke next call " + animationName);
         if (IsCorrect.Value)
         {
             CurrentGuess = "";
-            OnFadeForNextClass = "card-is-resetting";
-            await OnCorrect.InvokeAsync(Id);
+            CardHalfFlipStart = "card-half-flip-start";
         }
 
     }
 
-    public async Task OnFadeForNext(string cssPropertyName) {
-        OnFinalClass = "card-is-unflipped";
+    public async Task OnWrongAnswer()
+    {
+        Console.WriteLine("Wrong Answer");
+        IsCorrect = null ;
     }
 
-    public async Task OnFinal(string animationName)
+    public async Task OnHalfFlipStartComplete(string cssAnimationName) {
+        Console.WriteLine("Fade Next " + cssAnimationName);
+        await OnCorrect.InvokeAsync(Id);
+        CardHalfFlipEnd = "card-half-flip-end";
+    }
+
+    public async Task OnHalfFlipEndComplete(string animationName)
     {
-        Console.WriteLine("OnFinal " + animationName);
+        IsCorrect = null;
+        CardAnimationClass = SetCardAnimationClass();
+        CardHalfFlipStart = String.Empty;
+        CardHalfFlipEnd = String.Empty;
+        Console.WriteLine("Flip Start " + animationName);
     }
 
     private void Guess()
     {
         IsCorrect = CurrentGuess == Word.English;
-        //if (IsCorrect.Value)
-        //{
-        //    Console.WriteLine("Invoke animation");
-        //}
-        //else
-        //{
-        //    Console.WriteLine("No match yet");
-        //}
+        CardAnimationClass = SetCardAnimationClass();
     }
 
-    private string GetCardState()
+
+    private string SetCardAnimationClass()
     {
+        string result = String.Empty;
         if (IsCorrect.HasValue)
         {
-            return IsCorrect.Value ? "card-is-flipped" : String.Empty;
+            result =  IsCorrect.Value ? "card-answer-reveal" : "card-answer-wrong";
         }
-        return String.Empty;
+        return result;
     }
-
-    private string GetCorrectnessClass()
-    {
-        if (IsCorrect.HasValue)
-        {
-            return IsCorrect.Value ? "card-is-correct" : "card-is-wrong";
-        }
-        return String.Empty;
-    }
-
-    private string GetCorrectnessBorder()
-    {
-        if (IsCorrect.HasValue)
-        {
-            return IsCorrect.Value ? "border-success" : "border-danger";
-        }
-        return "border-primary";
-    }
-
-
-
-
 }

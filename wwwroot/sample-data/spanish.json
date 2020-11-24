@@ -2,7 +2,7 @@
   {
     "spanish": "pantano",
     "english": "swamp",
-    "isGuessed":  false
+    "isGuessed": false
   },
   {
     "spanish": "esmokin",
@@ -40,8 +40,63 @@
     "isGuessed": false
   },
   {
-    "spanish": "piedad",
-    "english": "piety",
+    "spanish": "garabato",
+    "english": "scribble",
+    "isGuessed": false
+  },
+  {
+    "spanish": "chapuzon",
+    "english": "dip",
+    "isGuessed": false
+  },
+  {
+    "spanish": "enesima",
+    "english": "umpteenth",
+    "isGuessed": false
+  },
+  {
+    "spanish": "desparramar",
+    "english": "scatter",
+    "isGuessed": false
+  },
+  {
+    "spanish": "portarrollos",
+    "english": "roll holder",
+    "isGuessed": false
+  },
+  {
+    "spanish": "guinando",
+    "english": "winking",
+    "isGuessed": false
+  },
+  {
+    "spanish": "foso",
+    "english": "pit",
+    "isGuessed": false
+  },
+  {
+    "spanish": "blandir",
+    "english": "brandish",
+    "isGuessed": false
+  },
+  {
+    "spanish": "plenilunio",
+    "english": "full moon",
+    "isGuessed": false
+  },
+  {
+    "spanish": "tinieblas",
+    "english": "darkness",
+    "isGuessed": false
+  },
+  {
+    "spanish": "iracundo",
+    "english": "wrathful",
+    "isGuessed": false
+  },
+  {
+    "spanish": "entumecido",
+    "english": "numb",
     "isGuessed": false
   }
 ]

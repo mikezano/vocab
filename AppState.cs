@@ -30,7 +30,7 @@ namespace Vocab
         public List<BasicWord> GetWordSet()
         {
             Random random = new Random();
-            return Words.OrderBy(x => random.Next()).Take(3).ToList();
+            return Words.OrderBy(x => random.Next()).Take(9).ToList();
         }
 
 

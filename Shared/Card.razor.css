@@ -2,7 +2,7 @@
     position: relative;
     perspective: 500px;
     width: 16rem ;
-    height: 10rem;
+    height: 11rem;
  
 }
 
@@ -15,17 +15,16 @@
     transform-style: preserve-3d;
 }
 
-.card-is-flipped .card-body {
-    animation: flip-card 0.5s ease-in .2s forwards;
+.card-answer-reveal .card-body {
+    animation: answer-reveal .5s ease-in forwards;
 }
 
-
-.card-is-resetting .card-body {
-    animation: reset-card 0.5s ease-in forwards;
+.card-half-flip-start .card-body {
+    animation: half-flip-start .25s ease-in forwards;
 }
 
-.card-is-unflipped .card-body{
-    animation: unflip-card 0.5s ease-in forwards;
+.card-half-flip-end .card-body{
+    animation: half-flip-end .25s ease-in forwards;
 }
 
 .card-front, .card-back {
@@ -39,9 +38,21 @@
     backface-visibility: hidden;
 }
 
-.card-front{
-    border-width:.2rem !important;
+.card-front {
+    border-width: .2rem !important;
     transition: border 0.5s ease-in;
+    background: linear-gradient( 
+        180deg, 
+        transparent 0%, 
+        rgba(8, 146, 208, 0.5) 4.5%, 
+        #0892d0 5%, 
+        rgba(8, 146, 208, 0.5) 5.5%,
+        transparent 10% ), 
+        transparent;
+    background-repeat: repeat;
+    background-size: 100% 2rem;
+    background-position: 0 .1rem;
+    
 }
 
 .card-back {
@@ -49,3 +60,25 @@
     background-color: orange;
     color: white;
 }
+
+.card-word{
+    border-width: .2rem !important;
+}
+
+.card-input{
+    height:2rem;
+    border:.1rem dashed gray;
+}
+
+.border-custom{
+    border: 1rem solid #ddd;
+}
+
+.border-danger-animate{
+    animation: border-danger-animate .5s ease-in forwards;
+}
+
+.border-success-animate{
+    border:1rem solid green;
+}
+
