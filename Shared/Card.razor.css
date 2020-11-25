@@ -3,7 +3,7 @@
     perspective: 500px;
     width: 16rem ;
     height: 11rem;
- 
+    background:none;
 }
 
 .card-body {
@@ -13,10 +13,16 @@
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
     opacity:1;
     transform-style: preserve-3d;
+    background-color:white;
+    border: .1rem solid transparent;
 }
 
 .card-answer-reveal .card-body {
-    animation: answer-reveal .5s ease-in forwards;
+    animation: answer-reveal 1.5s ease-in forwards;
+}
+
+.card-answer-wrong .card-body{
+    animation: answer-wrong 1.5s ease-in forwards;
 }
 
 .card-half-flip-start .card-body {
@@ -34,7 +40,6 @@
     background: white;
     color: #03446A;
     text-align: center;
-    border-radius: 5px;
     backface-visibility: hidden;
 }
 
@@ -57,8 +62,8 @@
 
 .card-back {
     transform: rotateY(180deg);
-    background-color: orange;
-    color: white;
+/*    background-color: orange;
+    color: white;*/
 }
 
 .card-word{
@@ -74,9 +79,7 @@
     border: 1rem solid #ddd;
 }
 
-.border-danger-animate{
-    animation: border-danger-animate .5s ease-in forwards;
-}
+
 
 .border-success-animate{
     border:1rem solid green;

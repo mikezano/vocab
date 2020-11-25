@@ -7,7 +7,7 @@ namespace Vocab.Models
 {
     public class BasicWord
     {
-        public string Spanish { get; set; }
+        public string Spanish { get; set; } = "----";
         public string English { get; set; }
         public bool IsGuessed { get; set; }
     }

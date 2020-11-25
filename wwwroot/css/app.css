@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color:#f2f2f2;
 }
 
 a, .btn-link {
@@ -50,11 +51,11 @@ a, .btn-link {
     }
 
 @keyframes answer-reveal {
-    from {
+    0% {
         transform: rotateY(0);
     }
 
-    to {
+    20%,100% {
         transform: rotateY(180deg);
     }
 }
@@ -79,20 +80,25 @@ a, .btn-link {
     }
 }
 
-@keyframes border-danger-animate {
-    0%, 100%{      
-        border: 1rem solid #ddd;
+@keyframes answer-wrong {
+    0% {
+        transform: rotateY(0);
     }
 
-    50% {border: 1rem solid red;}
+    20%,100% {
+        border:.1rem solid transparent;
+        transform: rotateY(180deg);
+    }
+    39%{transform: rotateY(180deg); translateX(0);}
+    40%{transform: rotateY(180deg) translateX(-.3rem);}
+    45% {transform: rotateY(180deg) translateX(.3rem);}
+    50% {transform: rotateY(180deg) translateX(-.2rem);}
+    55% {transform: rotateY(180deg) translateX(.2rem);}
+    60% {transform: rotateY(180deg) translateX(-.1rem);}
+    65% {transform: rotateY(180deg) translateX(.1rem);}
 
-/*    10%{transform:translateX(-.6rem);}
-    20%{transform:translateX(.6rem);}*/
-    30%{transform:translateX(-.4rem);}
-    40%{transform:translateX(.4rem);}
-    50%{transform:translateX(-.2rem);}
-    60%{transform:translateX(.2rem);}
-    70%{transform:translateX(-.1rem);}
-    80%{transform:translateX(.1rem);}
-    90%{transform:translateX(0);}
+    90%{
+        border:.1rem solid red;
+    }
+
 }

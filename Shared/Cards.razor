@@ -15,24 +15,29 @@
 
 @code {
 
-    [Parameter]
-    public List<BasicWord> Words { get; set; }
+        [Parameter]
+        public List<BasicWord> Words { get; set; }
 
     private static Random random = new Random();
 
-    public void OnCorrect(int index)
+    public void OnCorrect(Answer answer)
     {
-        AppState.Words[index].IsGuessed = true;
-        int nextIndex = -1;
+        if (answer.IsCorrect)
+        {
+            var indexOfWord = AppState.Words.FindIndex(f => f.Spanish == answer.Word.Spanish);
+            AppState.Words[indexOfWord].IsGuessed = true;
+        }
+
+        //Next word has to be not guessed and not on screen
+        var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Words.FindIndex(f=>f.Spanish == w.Spanish) == -1).ToList();
+        int nextIndex = random.Next(notGuessed.Count);
         BasicWord nextWord = new BasicWord();
-        var notGuessed = AppState.Words.Where(w => !w.IsGuessed).ToList();
+        if(notGuessed.Count > 0)
+            nextWord = notGuessed[nextIndex];
 
 
-        nextIndex = random.Next(notGuessed.Count);
-        nextWord = notGuessed[nextIndex];
 
-
-        Words[index] = nextWord;
+        Words[answer.ReplacementIndex] = nextWord;
 
     }
 }

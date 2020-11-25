@@ -1,6 +1,7 @@
 ﻿@page "/vocab";
 @inject HttpClient Http
 @inject AppState AppState
+
 @using Models;
 
 <h1 class="mt-5 text-center">Vocab</h1>
@@ -21,7 +22,7 @@
     {
         Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
 
-        AppState.SetWords(Words);
+        AppState.SetWords(Words.Take(11).ToList());
         WordSet = AppState.GetWordSet();
     }
 
