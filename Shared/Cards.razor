@@ -2,42 +2,13 @@
 @inject AppState AppState
 
 <div class="cards">
-    @if (Words.Count > 0)
+    @if (Data.Count > 0)
     {
-        @for (int i = 0; i < Words.Count; i++)
+        @for (int i = 0; i < Data.Count; i++)
         {
-            <Card Id="i" Word="Words[i]" OnCorrect="OnCorrect"></Card>
+           <Card Id="i" MultipleChoices="Data[i]" OnCorrect="OnCorrect"></Card>
         }
 
     }
 
 </div>
-
-@code {
-
-        [Parameter]
-        public List<BasicWord> Words { get; set; }
-
-    private static Random random = new Random();
-
-    public void OnCorrect(Answer answer)
-    {
-        if (answer.IsCorrect)
-        {
-            var indexOfWord = AppState.Words.FindIndex(f => f.Spanish == answer.Word.Spanish);
-            AppState.Words[indexOfWord].IsGuessed = true;
-        }
-
-        //Next word has to be not guessed and not on screen
-        var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Words.FindIndex(f=>f.Spanish == w.Spanish) == -1).ToList();
-        int nextIndex = random.Next(notGuessed.Count);
-        BasicWord nextWord = new BasicWord();
-        if(notGuessed.Count > 0)
-            nextWord = notGuessed[nextIndex];
-
-
-
-        Words[answer.ReplacementIndex] = nextWord;
-
-    }
-}

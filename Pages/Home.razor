@@ -5,7 +5,7 @@
 @using Models;
 
 <h1 class="mt-5 text-center">Vocab</h1>
-<Cards Words="@WordSet"></Cards>
+<Cards Data="@CardDatas"></Cards>
 <div class="d-flex justify-content-center mt-5">
     <button class="btn btn-lg btn-primary" @onclick="Reshuffle">Re-Shuffle</button>
 </div>
@@ -16,14 +16,15 @@
 @code{
 
     private List<BasicWord> Words = new List<BasicWord>();
-    private List<BasicWord> WordSet = new List<BasicWord>();
+    public List<CardDataMultipleChoices> CardDatas { get; set; } = new List<CardDataMultipleChoices>();
     int correctCount = 0;
     protected override async Task OnInitializedAsync()
     {
         Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
 
-        AppState.SetWords(Words.Take(11).ToList());
-        WordSet = AppState.GetWordSet();
+        AppState.SetWords(Words.ToList());
+        CardDatas = AppState.GetCardDataSet();
+        Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());
     }
 
 

@@ -13,19 +13,37 @@
                 <CallbackOnCssAnimationEnd CssAnimationName="half-flip-end" OnCssAnimationCompleted="OnHalfFlipEndComplete">
                     <div class="card-body p-0">
                         <div class="card-front">
-                            <h1 class="card-word border-bottom border-danger bg-light">@Word.Spanish</h1>
-                            @if (Word.Spanish != "----")
+                            <h1 class="card-word border-bottom border-danger bg-light">@MultipleChoices.Translation</h1>
+                            @*@if (MultipleChoices.Answer != "----")
                             {
                                 <input type="text"
                                        class="card-input my-2"
                                        @bind="CurrentGuess"
                                        @ref="ReferenceToInputControl" />
                                 <button class="mt-1 btn btn-info" @onclick="Guess">Guess</button>
+                            }*@
+
+                            @if (MultipleChoices.Answer != "----")
+                            {
+                                <div class="mt-3 px-4">
+                                    @foreach (var choice in MultipleChoices.Choices)
+                                    {
+                                    <div class="d-flex align-items-center card-choice">
+                                        <input 
+                                            type="radio" 
+                                            name="@MultipleChoices.Translation" 
+                                            value="@choice"
+                                            id="@(MultipleChoices.Translation + "_" + choice)"
+                                            @onchange="Guess"/>
+                                        <label class="ml-2 my-0" for="@(MultipleChoices.Translation + "_" + choice)">@choice</label>
+                                    </div>
+                                    }
+                                </div>
                             }
 
                         </div>
                         <div class="card-back d-flex align-items-center justify-content-center">
-                            <h2>@Word.English</h2>
+                            <h2>@MultipleChoices.Answer</h2>
                         </div>
                     </div>
                 </CallbackOnCssAnimationEnd>
@@ -34,76 +52,3 @@
     </CallbackOnCssAnimationEnd>
 </div>
 
-
-@code {
-
-        [Parameter]
-        public BasicWord Word { get; set; }
-        [Parameter]
-        public int Id { get; set; }
-        [Parameter]
-        public EventCallback<Answer> OnCorrect { get; set; }
-
-    public string CardAnimationClass { get; set; } = String.Empty;
-    public string CardHalfFlipStart { get; set; } = String.Empty;
-    public string CardHalfFlipEnd { get; set; } = String.Empty;
-
-    ElementReference ReferenceToInputControl;
-
-    public bool? IsCorrect { get; set; }
-    public string CurrentGuess { get; set; }
-
-    public async Task OnRevealComplete(string animationName)
-    {
-        if (IsCorrect.Value)
-        {
-            CurrentGuess = "";
-            CardHalfFlipStart = "card-half-flip-start";
-        }
-    }
-
-    public async Task OnWrongAnswerComplete()
-    {
-        IsCorrect = null;
-        CardAnimationClass = SetCardAnimationClass();
-        CardHalfFlipStart = "card-half-flip-start";
-    }
-
-    public async Task OnHalfFlipStartComplete(string cssAnimationName)
-    {
-
-            await OnCorrect.InvokeAsync(new Answer { 
-                Word = Word, 
-                ReplacementIndex = Id, 
-                IsCorrect = IsCorrect.HasValue && IsCorrect.Value == true
-            });
-        
-        CardHalfFlipEnd = "card-half-flip-end";
-    }
-
-    public async Task OnHalfFlipEndComplete(string animationName)
-    {
-        IsCorrect = null;
-        CardAnimationClass = SetCardAnimationClass();
-        CardHalfFlipStart = String.Empty;
-        CardHalfFlipEnd = String.Empty;
-    }
-
-    private void Guess()
-    {
-        JSRuntime.InvokeVoidAsync("Vocab.setFocus", ReferenceToInputControl);
-        IsCorrect = CurrentGuess == Word.English;
-        CardAnimationClass = SetCardAnimationClass();
-    }
-
-
-    private string SetCardAnimationClass()
-    {
-        string result = String.Empty;
-        if (IsCorrect.HasValue)
-        {
-            result = IsCorrect.Value ? "card-answer-reveal" : "card-answer-wrong";
-        }
-        return result;
-    }
-}

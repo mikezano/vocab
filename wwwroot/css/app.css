@@ -89,15 +89,15 @@ a, .btn-link {
         border:.1rem solid transparent;
         transform: rotateY(180deg);
     }
-    39%{transform: rotateY(180deg); translateX(0);}
-    40%{transform: rotateY(180deg) translateX(-.3rem);}
-    45% {transform: rotateY(180deg) translateX(.3rem);}
-    50% {transform: rotateY(180deg) translateX(-.2rem);}
-    55% {transform: rotateY(180deg) translateX(.2rem);}
-    60% {transform: rotateY(180deg) translateX(-.1rem);}
-    65% {transform: rotateY(180deg) translateX(.1rem);}
+    29% {transform: rotateY(180deg) translateX(0);}
+    30% {transform: rotateY(180deg) translateX(-.3rem);}
+    35% {transform: rotateY(180deg) translateX(.3rem);}
+    40% {transform: rotateY(180deg) translateX(-.2rem);}
+    45% {transform: rotateY(180deg) translateX(.2rem);}
+    50% {transform: rotateY(180deg) translateX(-.1rem);}
+    55% {transform: rotateY(180deg) translateX(.1rem);}
 
-    90%{
+    60%{
         border:.1rem solid red;
     }
 

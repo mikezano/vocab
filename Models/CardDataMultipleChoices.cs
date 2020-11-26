@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 
 namespace Vocab.Models
 {
-    public class Answer
+    public class CardDataMultipleChoices
     {
-        public string Value { get; set; }
+        public string Answer { get; set; }
         public string Translation { get; set; }
-        public int ReplacementIndex { get; set; }
-        public bool IsCorrect { get; set; }
+        public List<string> Choices { get; set; }
     }
 }

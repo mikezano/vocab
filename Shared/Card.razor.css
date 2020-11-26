@@ -33,6 +33,10 @@
     animation: half-flip-end .25s ease-in forwards;
 }
 
+.card-choice{
+    height:2rem;
+}
+
 .card-front, .card-back {
     position: absolute;
     height: 100%;
