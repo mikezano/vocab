@@ -19,7 +19,7 @@ namespace Vocab.Shared
             int indexOfWord = AppState.Words.FindIndex(f => f.Spanish == answer.Translation);
             if (answer.IsCorrect)
             {
-                AppState.Words[indexOfWord].IsGuessed = true;
+                AppState.UpdateCorrectGuess(indexOfWord);
             }
 
             //Next word has to be not guess  ed and not on screen

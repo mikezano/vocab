@@ -21,7 +21,15 @@ namespace Vocab
             NotifyStateChanged();
         }
 
+        public void UpdateCorrectGuess(int index)
+        {
+            Words[index].IsGuessed = true;
+            NotifyStateChanged();
+        }
+
         private void NotifyStateChanged() => OnChange?.Invoke();
+
+        public int GuessedCorrectlyCount => Words.Count(c => c.IsGuessed);
 
 
         public void SetWords(List<BasicWord> words)
@@ -29,16 +37,17 @@ namespace Vocab
             Words = words;
         }
 
-        public List<CardDataMultipleChoices> GetCardDataSet()
+        public List<CardDataMultipleChoices> GetCardDataSet(int count)
         {
             Random random = new Random();
             var cardDataSet = Words
                 .OrderBy(x => random.Next())
-                .Take(9)
+                .Take(count > Words.Count ? Words.Count : count)
                 .ToList()
                 .Select(s => { return CreateCardMultipleChoices(s, 2); })
                 .ToList();
-            Console.WriteLine("GetCardDataSet");
+
+            NotifyStateChanged();
             return cardDataSet;
         }
 
@@ -60,6 +69,12 @@ namespace Vocab
             return new CardDataMultipleChoices { Choices = allAnswers, Answer = word.English, Translation = word.Spanish };
         }
 
+
+        public void ReSetGuesses()
+        {
+            Words.ForEach(fe => { fe.IsGuessed = false; });
+            NotifyStateChanged();
+        }
 
 
     }

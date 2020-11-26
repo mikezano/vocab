@@ -1,0 +1,24 @@
+﻿@inject AppState AppState
+@implements IDisposable
+
+@if (AppState.Words != null)
+{
+    <div class="stats">
+        <span>@AppState.GuessedCorrectlyCount</span>
+        <span>/</span>
+        <span>@AppState.Words.Count</span>
+    </div>
+}
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

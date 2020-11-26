@@ -1,7 +1,44 @@
-﻿@page "/"
+﻿@page "/";
+@inject HttpClient Http
+@inject AppState AppState
+@inject IJSRuntime JS
 
-<h1>Hello, world!</h1>
+@using Models;
 
-Welcome to your new app.
+<h1 class="text-center text-primary  m-0 vocab-title">Vocab</h1>
+<Cards Data="@CardDatas"></Cards>
+<div class="d-flex justify-content-center">
+    <button class="btn btn-lg btn-primary" @onclick="ReStart">Re-Shuffle</button>
+</div>
+<Stats></Stats>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+
+
+@code{
+
+    private static int CARD_HEIGHT = 178;
+    private static int CARD_WIDTH = 256;
+    private List<BasicWord> Words = new List<BasicWord>();
+    public List<CardDataMultipleChoices> CardDatas { get; set; } = new List<CardDataMultipleChoices>();
+    private int _visibleCardCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
+        AppState.SetWords(Words.ToList());
+
+        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Vocab.getDimensions");
+        _visibleCardCount = dimensions.GetVisibleCardCount();
+        CardDatas = AppState.GetCardDataSet(_visibleCardCount);
+        Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());
+    }
+
+
+    private void ReStart()
+    {
+        AppState.ReSetGuesses();
+        CardDatas = AppState.GetCardDataSet(_visibleCardCount);
+    }
+}
