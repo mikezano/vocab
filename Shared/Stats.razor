@@ -3,7 +3,9 @@
 
 @if (AppState.Words != null)
 {
-    <div class="stats">
+    <div class="stats mr-2" title="Correct Responses">
+        <span class="oi oi-check text-success"></span> 
+        <span>:</span>
         <span>@AppState.GuessedCorrectlyCount</span>
         <span>/</span>
         <span>@AppState.Words.Count</span>

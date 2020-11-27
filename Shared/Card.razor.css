@@ -36,6 +36,9 @@
 .card-choice{
     height:2rem;
 }
+.card-choice label{
+    font-size: 1.6rem;
+}
 
 .card-front, .card-back {
     position: absolute;
