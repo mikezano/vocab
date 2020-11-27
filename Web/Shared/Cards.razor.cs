@@ -1,11 +1,11 @@
 ﻿using System;
-using Vocab.Models;
+using Web.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Vocab.Shared
+namespace Web.Shared
 {
     public partial class Cards
     {

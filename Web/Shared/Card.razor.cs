@@ -1,10 +1,10 @@
 ﻿using System;
-using Vocab.Models;
+using Web.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Vocab.Shared
+namespace Web.Shared
 {
     public partial class Card
     {
@@ -53,7 +53,7 @@ namespace Vocab.Shared
                 IsCorrect = IsCorrect.HasValue && IsCorrect.Value == true
             });
 
-            await JSRuntime.InvokeVoidAsync("Vocab.clearRadioButtons");
+            await JSRuntime.InvokeVoidAsync("Web.clearRadioButtons");
             CardHalfFlipEnd = "card-half-flip-end";
         }
 

@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Web;
 
-namespace Vocab
+namespace Web
 {
     public class Program
     {

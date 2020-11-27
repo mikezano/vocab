@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Vocab.Models;
+using Web.Models;
 
-namespace Vocab
+namespace Web
 {
     public class AppState
     {

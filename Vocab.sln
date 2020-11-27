@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vocab", "Vocab.csproj", "{73B774C1-E217-4D64-8A8C-F8726EC0ED14}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleSheets", "GoogleSheets\GoogleSheets\GoogleSheets.csproj", "{A1E55729-CAF0-48E0-9770-C7BD771DE439}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{7CF9F756-D82F-4FD9-BDC2-7B37A03AFC53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{73B774C1-E217-4D64-8A8C-F8726EC0ED14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73B774C1-E217-4D64-8A8C-F8726EC0ED14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73B774C1-E217-4D64-8A8C-F8726EC0ED14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73B774C1-E217-4D64-8A8C-F8726EC0ED14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1E55729-CAF0-48E0-9770-C7BD771DE439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1E55729-CAF0-48E0-9770-C7BD771DE439}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1E55729-CAF0-48E0-9770-C7BD771DE439}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1E55729-CAF0-48E0-9770-C7BD771DE439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF9F756-D82F-4FD9-BDC2-7B37A03AFC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF9F756-D82F-4FD9-BDC2-7B37A03AFC53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF9F756-D82F-4FD9-BDC2-7B37A03AFC53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF9F756-D82F-4FD9-BDC2-7B37A03AFC53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

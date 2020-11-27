@@ -29,7 +29,7 @@
         Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
         AppState.SetWords(Words.ToList());
 
-        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Vocab.getDimensions");
+        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
         _visibleCardCount = dimensions.GetVisibleCardCount();
         CardDatas = AppState.GetCardDataSet(_visibleCardCount);
         Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());

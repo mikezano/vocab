@@ -1,7 +1,7 @@
 ﻿@using Models;
 @inject AppState AppState
 
-<div class="cards">
+<div class="cards d-flex flex-wrap justify-content-center">
     @if (Data.Count > 0)
     {
         @for (int i = 0; i < Data.Count; i++)
