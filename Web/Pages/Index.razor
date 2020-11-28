@@ -4,6 +4,12 @@
 @inject IJSRuntime JS
 
 @using Models;
+@using System.IO;
+
+
+@using Google.Apis.Auth.OAuth2;
+@using Google.Apis.Services;
+@using Google.Apis.Sheets.v4;
 
 <h1 class="text-center text-primary  m-0 vocab-title">Vocab</h1>
 <Cards Data="@CardDatas"></Cards>
@@ -24,8 +30,16 @@
     public List<CardDataMultipleChoices> CardDatas { get; set; } = new List<CardDataMultipleChoices>();
     private int _visibleCardCount = 0;
 
+    static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
+    static readonly string ApplicationName = "Vocab";
+    static readonly string SpreadsheetId = "1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY";
+    static readonly string sheet = "words";
+    static SheetsService service;
+
+
     protected override async Task OnInitializedAsync()
     {
+
         Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
         AppState.SetWords(Words.ToList());
 
