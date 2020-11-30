@@ -4,10 +4,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Remove="wwwroot\client_secrets.json" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="BlazorDeferredRemove" Version="0.2.5" />
@@ -19,12 +15,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\fonts\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\client_secrets.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

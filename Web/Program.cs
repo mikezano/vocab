@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Web;
+using Web.Api;
 
 namespace Web
 {
@@ -19,7 +20,10 @@ namespace Web
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new GoogleSheet(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }));
             builder.Services.AddScoped(sp => new AppState());
+
+
 
             await builder.Build().RunAsync();
         }

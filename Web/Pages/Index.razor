@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject AppState AppState
 @inject IJSRuntime JS
+@inject GoogleSheet GoogleSheet
 
 @using Models;
 @using System.IO;
@@ -10,6 +11,8 @@
 @using Google.Apis.Auth.OAuth2;
 @using Google.Apis.Services;
 @using Google.Apis.Sheets.v4;
+
+
 
 <h1 class="text-center text-primary  m-0 vocab-title">Vocab</h1>
 <Cards Data="@CardDatas"></Cards>
@@ -39,14 +42,20 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //var resultss = await GoogleSheet.GetEntries(SpreadsheetId);
+        //var results = await Http.GetFromJsonAsync<object>("https://spreadsheets.google.com/feeds/list/1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY/od6/public/basic?alt=json");
 
-        Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
+        //Console.WriteLine("Results " + results);
+
+        //Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
+        Words = await GoogleSheet.GetEntries(SpreadsheetId);
+        Console.WriteLine("First Word: " + Words[0]);
         AppState.SetWords(Words.ToList());
 
         var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
         _visibleCardCount = dimensions.GetVisibleCardCount();
         CardDatas = AppState.GetCardDataSet(_visibleCardCount);
-        Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());
+        //Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());
     }
 
 
