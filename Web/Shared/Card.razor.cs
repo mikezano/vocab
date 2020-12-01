@@ -9,7 +9,7 @@ namespace Web.Shared
     public partial class Card
     {
         [Parameter]
-        public CardDataMultipleChoices MultipleChoices { get; set; }
+        public TranslationMultipleChoices MultipleChoices { get; set; }
         [Parameter]
         public int Id { get; set; }
         [Parameter]

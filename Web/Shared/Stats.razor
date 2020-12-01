@@ -1,14 +1,14 @@
 ﻿@inject AppState AppState
 @implements IDisposable
 
-@if (AppState.Words != null)
+@if (AppState.Translations != null)
 {
     <div class="stats mr-2" title="Correct Responses">
         <span class="oi oi-check text-success"></span> 
         <span>:</span>
         <span>@AppState.GuessedCorrectlyCount</span>
         <span>/</span>
-        <span>@AppState.Words.Count</span>
+        <span>@AppState.Translations.Count</span>
     </div>
 }
 

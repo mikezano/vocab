@@ -2,11 +2,11 @@
 @inject AppState AppState
 
 <div class="cards d-flex flex-wrap justify-content-center">
-    @if (Data.Count > 0)
+    @if (MultipleChoiceSets.Count > 0)
     {
-        @for (int i = 0; i < Data.Count; i++)
+        @for (int i = 0; i < MultipleChoiceSets.Count; i++)
         {
-           <Card Id="i" MultipleChoices="Data[i]" OnCorrect="OnCorrect"></Card>
+           <Card Id="i" MultipleChoices="MultipleChoiceSets[i]" OnCorrect="OnCorrect"></Card>
         }
 
     }

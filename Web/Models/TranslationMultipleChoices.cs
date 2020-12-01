@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class CardDataMultipleChoices
+    public class TranslationMultipleChoices
     {
         public string Answer { get; set; }
         public string Translation { get; set; }

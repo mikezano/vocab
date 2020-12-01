@@ -1,67 +1,9 @@
 ﻿@page "/";
-@inject HttpClient Http
-@inject AppState AppState
-@inject IJSRuntime JS
-@inject GoogleSheet GoogleSheet
-
-@using Models;
-@using System.IO;
-
-
-@using Google.Apis.Auth.OAuth2;
-@using Google.Apis.Services;
-@using Google.Apis.Sheets.v4;
-
 
 
 <h1 class="text-center text-primary  m-0 vocab-title">Vocab</h1>
-<Cards Data="@CardDatas"></Cards>
+<Cards MultipleChoiceSets="@MultipleChoiceSets"></Cards>
 <div class="d-flex justify-content-center">
     <button class="btn btn-lg btn-primary" @onclick="ReStart">Re-Start</button>
 </div>
 <Stats></Stats>
-
-
-
-
-
-@code{
-
-    private static int CARD_HEIGHT = 178;
-    private static int CARD_WIDTH = 256;
-    private List<BasicWord> Words = new List<BasicWord>();
-    public List<CardDataMultipleChoices> CardDatas { get; set; } = new List<CardDataMultipleChoices>();
-    private int _visibleCardCount = 0;
-
-    static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-    static readonly string ApplicationName = "Vocab";
-    static readonly string SpreadsheetId = "1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY";
-    static readonly string sheet = "words";
-    static SheetsService service;
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        //var resultss = await GoogleSheet.GetEntries(SpreadsheetId);
-        //var results = await Http.GetFromJsonAsync<object>("https://spreadsheets.google.com/feeds/list/1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY/od6/public/basic?alt=json");
-
-        //Console.WriteLine("Results " + results);
-
-        //Words = await Http.GetFromJsonAsync<List<BasicWord>>("sample-data/spanish.json");
-        Words = await GoogleSheet.GetEntries(SpreadsheetId);
-        Console.WriteLine("First Word: " + Words[0]);
-        AppState.SetWords(Words.ToList());
-
-        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
-        _visibleCardCount = dimensions.GetVisibleCardCount();
-        CardDatas = AppState.GetCardDataSet(_visibleCardCount);
-        //Console.WriteLine("OnInitializedAsync " + CardDatas.Count.ToString());
-    }
-
-
-    private void ReStart()
-    {
-        AppState.ReSetGuesses();
-        CardDatas = AppState.GetCardDataSet(_visibleCardCount);
-    }
-}

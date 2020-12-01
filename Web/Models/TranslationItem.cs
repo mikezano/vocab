@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class BasicWord
+    public class TranslationItem
     {
         public string Spanish { get; set; } = "----";
         public string English { get; set; }
