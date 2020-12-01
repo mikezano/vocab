@@ -51,12 +51,14 @@ namespace Web
         public void SetWords(List<TranslationItem> words)
         {
             Translations = words;
+            NotifyStateChanged();
         }
 
         public List<TranslationMultipleChoices> GetMultipleChoiceSets(int count)
         {
             Random random = new Random();
             var cardDataSet = Translations
+                .Where(w => !w.IsGuessed)
                 .OrderBy(x => random.Next())
                 .Take(count > Translations.Count ? Translations.Count : count)
                 .ToList()
@@ -89,6 +91,7 @@ namespace Web
         public void ReSetGuesses()
         {
             Translations.ForEach(fe => { fe.IsGuessed = false; });
+            js.InvokeVoidAsync("Web.saveToStorage", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
         }
 

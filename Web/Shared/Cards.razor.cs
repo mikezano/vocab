@@ -21,7 +21,7 @@ namespace Web.Shared
                 AppState.UpdateCorrectGuess(indexOfWord);
             }
 
-            //Next word has to be not guess  ed and not on screen
+            //Next word has to be not guessed and not on screen
             //var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Data.FindIndex(f => f.Translation == w.Spanish) == -1).ToList();
             var notGuessed = AppState.Translations.Where(w => !w.IsGuessed).ToList();
             Console.WriteLine("Not Guessed " + notGuessed.Count.ToString());

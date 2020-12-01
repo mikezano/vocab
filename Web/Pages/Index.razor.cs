@@ -44,7 +44,6 @@ namespace Web.Pages
                 _translations = storageTranslations;
             }
 
-            _translations = await GoogleSheet.GetEntries(SpreadsheetId);
             AppState.SetWords(_translations.ToList());
 
             var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
