@@ -12,6 +12,7 @@ namespace Web
     public class AppState
     {
         public List<TranslationItem> Translations { get; private set; }
+        public string SheetId { get; private set; } = null;
         public string SelectedColour { get; private set; }
         private Random _random = new Random();
 
@@ -20,6 +21,12 @@ namespace Web
 
 
         public event Action OnChange;
+        public event Action OnSetSheetId;
+        public event Action OnReStart;
+
+        private void NotifyStateChanged() => OnChange?.Invoke();
+        private void NotifySheetIdChanged() => OnSetSheetId?.Invoke();
+        private void NotifyReStart() => OnReStart?.Invoke();
 
         public void SetJsInterop(IJSRuntime js)
         {
@@ -32,6 +39,12 @@ namespace Web
             NotifyStateChanged();
         }
 
+        public void SetSheetId(string sheetId)
+        {
+            SheetId = sheetId;
+            NotifySheetIdChanged();
+        }
+
         public void UpdateCorrectGuess(int index)
         {
             Translations[index].IsGuessed = true;
@@ -39,11 +52,11 @@ namespace Web
             {
                 Console.WriteLine("JS: " + js);
             }
-            js.InvokeVoidAsync("Web.saveToStorage", JsonConvert.SerializeObject(Translations));
+            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
         }
 
-        private void NotifyStateChanged() => OnChange?.Invoke();
+
 
         public int GuessedCorrectlyCount => Translations.Count(c => c.IsGuessed);
 
@@ -91,8 +104,8 @@ namespace Web
         public void ReSetGuesses()
         {
             Translations.ForEach(fe => { fe.IsGuessed = false; });
-            js.InvokeVoidAsync("Web.saveToStorage", JsonConvert.SerializeObject(Translations));
-            NotifyStateChanged();
+            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            NotifyReStart();
         }
 
     }

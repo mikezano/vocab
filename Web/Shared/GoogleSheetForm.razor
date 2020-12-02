@@ -1,0 +1,40 @@
+﻿@inject IJSRuntime JS
+@inject AppState AppState
+
+<div class="d-flex align-items-center flex-column">
+
+    <div class="card" style="width:30rem;">
+        <div class="card-body">
+            <h1 class="card-title border-bottom mb-4">Google Sheet Id</h1>
+            <h5>Enter the Id of your publicly available google sheet</h5>
+            <input type="text"
+                   class="form-control"
+                   @bind="SheetId"
+                   @ref="ReferenceToInputControl"
+                   placeholder="e.g. 1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY" />
+            <div class="d-flex justify-content-center">
+                <button class=" mt-2 btn btn-lg btn-primary" @onclick="GetGoogleSheetId">Start</button>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="mt-4 mb-3 " style="width:30rem;">Example:  The highlighted region represents the <u>google sheet id</u> required.  Note the format of the columns to build your own card deck.</h5>
+    <img src="images/sheet-id.png" />
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string SheetId { get; set; } = "1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY";
+
+    private ElementReference ReferenceToInputControl;
+
+
+    public void GetGoogleSheetId()
+    {
+        JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id", SheetId);
+        AppState.SetSheetId(SheetId);
+    }
+}

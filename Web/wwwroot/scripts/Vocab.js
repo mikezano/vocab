@@ -16,14 +16,18 @@ Web.clearRadioButtons = () => {
         .forEach(el => el.checked = false);
 };
 
-Web.saveToStorage = (translations) => {
+Web.saveToStorage = (name, obj) => {
     console.log("Saving...");
-    localStorage.setItem('translations', translations);
+    localStorage.setItem(name, obj);
 };
 
 Web.getStorageItem = (name) => {
     var results = localStorage.getItem(name);
     return JSON.parse(results);
+};
+
+Web.getStorageItemAsString = (name) => {
+    return localStorage.getItem(name);
 };
 
 Web.clearStorage = () => {
