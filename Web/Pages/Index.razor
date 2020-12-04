@@ -1,7 +1,7 @@
 ﻿@page "/";
 
-
-<h1 class="text-center text-primary  m-0 vocab-title">Vocab</h1>
+<Navigation></Navigation>
+<h1 class="text-center  p-0 m-0 vocab-title">Vocab</h1>
 @if (AppState.SheetId == null)
 {
     <GoogleSheetForm></GoogleSheetForm>
@@ -10,9 +10,11 @@ else
 {
     <Cards></Cards>
     <div class="d-flex justify-content-center">
-        <button class="btn btn-lg btn-primary" @onclick="ReStart">Re-Start</button>
+        <button class="btn btn-lg btn-primary mr-1" @onclick="ReStart">Re-Start</button>
+        <button class="btn btn-lg btn-success ml-1" @onclick="Shuffle">Shuffle</button>
     </div>
     <Stats></Stats>
+
 }
 
 

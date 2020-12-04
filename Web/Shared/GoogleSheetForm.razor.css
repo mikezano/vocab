@@ -1,3 +1,11 @@
 ﻿.card-title {
     color: #03446A;
 }
+
+
+.sheet-img {
+    width: 100%;
+    max-width: 50rem;
+    min-width: 22rem;
+    padding: 0 1rem;
+}

@@ -23,7 +23,6 @@ namespace Web.Pages
             AppState.SetJsInterop(JS);
             AppState.OnSetSheetId += StateHasChanged;
 
-            Console.WriteLine("Index OnInitialized");
             var currentSheetId = await JS.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id");
             AppState.SetSheetId(currentSheetId);
         }
@@ -36,6 +35,11 @@ namespace Web.Pages
         private void ReStart()
         {
             AppState.ReSetGuesses();
+        }
+
+        private void Shuffle()
+        {
+            AppState.Shuffle();
         }
     }
 }

@@ -17,7 +17,6 @@ Web.clearRadioButtons = () => {
 };
 
 Web.saveToStorage = (name, obj) => {
-    console.log("Saving...");
     localStorage.setItem(name, obj);
 };
 

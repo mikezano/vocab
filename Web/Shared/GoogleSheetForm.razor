@@ -3,10 +3,9 @@
 
 <div class="d-flex align-items-center flex-column">
 
-    <div class="card" style="width:30rem;">
+    <div class="card" style="width:28rem;">
         <div class="card-body">
-            <h1 class="card-title border-bottom mb-4">Google Sheet Id</h1>
-            <h5>Enter the Id of your publicly available google sheet</h5>
+            <h5>Enter a public google sheet id  (see below)</h5>
             <input type="text"
                    class="form-control"
                    @bind="SheetId"
@@ -18,8 +17,8 @@
         </div>
     </div>
 
-    <h5 class="mt-4 mb-3 " style="width:30rem;">Example:  The highlighted region represents the <u>google sheet id</u> required.  Note the format of the columns to build your own card deck.</h5>
-    <img src="images/sheet-id.png" />
+    <h5 class="mt-4 mb-3 " style="width:28rem;">The highlighted region of the url in the image below represents the <u>google sheet id</u>.  Make sure your sheet is publicly available and use a two column format to build a custom card deck. 🤓</h5>
+    <img  class="sheet-img" src="images/sheet-id.png" />
 </div>
 
 
@@ -27,8 +26,7 @@
 @code {
 
     [Parameter]
-    public string SheetId { get; set; } = "1drjaaHkOex3jIoP4mhTNoSsCVi9OSouS9NFI601yIKY";
-
+    public string SheetId { get; set; } = "16V5nBKof9nm-mWfGP0V8WNxzA6cNibvSskgdjhQY0uc";
     private ElementReference ReferenceToInputControl;
 
 

@@ -1,0 +1,34 @@
+﻿@inject AppState AppState
+
+
+<button class="navigation btn btn-sm btn-default m-1" @onclick="Home">
+    @if (AppState.SheetId == null)
+    {
+
+    }
+    else
+    {
+        <i class="oi oi-home"></i>
+    }
+
+</button>
+
+
+
+@code {
+
+    protected override async void OnInitialized()
+    {
+        AppState.OnSetSheetId += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnSetSheetId -= StateHasChanged;
+    }
+
+    public void Home()
+    {
+        AppState.Reset();
+    }
+}

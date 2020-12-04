@@ -13,12 +13,9 @@ namespace Web
     {
         public List<TranslationItem> Translations { get; private set; }
         public string SheetId { get; private set; } = null;
-        public string SelectedColour { get; private set; }
         private Random _random = new Random();
 
-        [Inject]
-        private IJSRuntime js { get; set; }
-
+        private IJSRuntime js;
 
         public event Action OnChange;
         public event Action OnSetSheetId;
@@ -33,37 +30,24 @@ namespace Web
             this.js = js;
         }
 
-        public void SetColour(string colour)
-        {
-            SelectedColour = colour;
-            NotifyStateChanged();
-        }
-
         public void SetSheetId(string sheetId)
         {
             SheetId = sheetId;
             NotifySheetIdChanged();
         }
 
-        public void UpdateCorrectGuess(int index)
-        {
-            Translations[index].IsGuessed = true;
-            if(js != null)
-            {
-                Console.WriteLine("JS: " + js);
-            }
-            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
-            NotifyStateChanged();
-        }
-
-
-
-        public int GuessedCorrectlyCount => Translations.Count(c => c.IsGuessed);
-
-
         public void SetWords(List<TranslationItem> words)
         {
             Translations = words;
+            NotifyStateChanged();
+        }
+
+        public int GuessedCorrectlyCount => Translations.Count(c => c.IsGuessed);
+
+        public void UpdateCorrectGuess(int index)
+        {
+            Translations[index].IsGuessed = true;
+            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
         }
 
@@ -100,7 +84,6 @@ namespace Web
             return new TranslationMultipleChoices { Choices = allAnswers, Answer = word.English, Translation = word.Spanish };
         }
 
-
         public void ReSetGuesses()
         {
             Translations.ForEach(fe => { fe.IsGuessed = false; });
@@ -108,5 +91,18 @@ namespace Web
             NotifyReStart();
         }
 
+        public void Shuffle()
+        {
+            NotifyReStart();
+        }
+
+        public async void Reset()
+        {
+            await js.InvokeVoidAsync("Web.clearStorage");
+            Translations = new List<TranslationItem>();
+            SheetId = null;
+            NotifyStateChanged();
+            NotifySheetIdChanged();
+        }
     }
 }

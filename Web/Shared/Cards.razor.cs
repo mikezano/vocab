@@ -26,12 +26,7 @@ namespace Web.Shared
         private int _visibleCardCount = 0;
 
         protected override async Task OnInitializedAsync()
-        {
-            Console.WriteLine("Cards OnInitialized " + MultipleChoiceSets.Count);
-            //  AppState.OnChange += StateHasChanged;
-
-            Console.WriteLine("GetData");
-
+        { 
             var storageTranslations = await JS.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
 
             if (storageTranslations == null)
@@ -50,8 +45,6 @@ namespace Web.Shared
             _visibleCardCount = dimensions.GetVisibleCardCount();
 
             MultipleChoiceSets = AppState.GetMultipleChoiceSets(_visibleCardCount);
-
-            Console.WriteLine("MultipleChoiceSets : " + MultipleChoiceSets.Count + " " + AppState.SheetId);
         }
 
         public void ReStart()
@@ -81,9 +74,7 @@ namespace Web.Shared
             //Next word has to be not guessed and not on screen
             //var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Data.FindIndex(f => f.Translation == w.Spanish) == -1).ToList();
             var notGuessed = AppState.Translations.Where(w => !w.IsGuessed).ToList();
-            Console.WriteLine("Not Guessed " + notGuessed.Count.ToString());
             var notOnScreen = notGuessed.Where(w => MultipleChoiceSets.FindIndex(fi => fi.Translation == w.Spanish) == -1).ToList();
-            Console.WriteLine("Not On Screen " + notOnScreen.Count.ToString());
             if (notOnScreen.Count == 0 && !answer.IsCorrect)
             {
                 notOnScreen.Add(AppState.Translations[indexOfWord]);
