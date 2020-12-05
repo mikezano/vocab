@@ -6,16 +6,20 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
 [zano.azurewebsites.net](https://zano.azurewebsites.net)
 
-<img src="Web/wwwroot/images/demo.gif" style="width:400px !important;"/>
+<div style="width:400px !important;">
+    <img src="Web/wwwroot/images/demo.gif"/>
+</div>
 
 ## Instructions
 
-- Highlighted portion of the url in the image below represents the **google sheet id**. Publish your sheet (File -> Publish to Web) and use the first two columns to build a mapping for your card deck. 🤓
+1. Go to your google sheet and copy the equivalent highlited portion of the url. This is your **google sheet id**. Publish your sheet (File -> Publish to Web) and use the first two columns to build a mapping for your card deck. 🤓
 
-- ![](Web/wwwroot/images/sheet-id.png)
+   ![](Web/wwwroot/images/sheet-id.png)
 
-- Enter the **google sheet id** into the input at the home page of and hit the start button. In a moment the
+2. Publish your google sheet through (File --> Publish to Web)
 
-- ![](Web/wwwroot/images/home.png)
+3. Enter the **google sheet id** into the input at the home page of and hit the start button.
 
-## Thanks!
+    ![](Web/wwwroot/images/home.png)
+
+### Feedback is appreciated
