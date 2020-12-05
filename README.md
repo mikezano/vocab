@@ -10,7 +10,7 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
 ## Instructions
 
-1. Go to your google sheet and copy the equivalent highlited portion of the url. This is your **google sheet id**. Publish your sheet (File -> Publish to Web) and use the first two columns to build a mapping for your card deck. 🤓
+1. Go to your google sheet and copy the equivalent highlighted portion of the url. This is your **google sheet id**. Use the first two columns to build a mapping for your card deck. 🤓
 
    ![](Web/wwwroot/images/sheet-id.png)
 
