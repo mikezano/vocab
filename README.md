@@ -4,7 +4,6 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
 # Demo
 
-![](Web/wwwroot/images/demo.gif =100x20)
 <img src="Web/wwwroot/images/demo.gif" style="width:400px"/>
 
 ## Instructions
