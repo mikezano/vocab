@@ -2,6 +2,11 @@
 
 A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple choice flashcards based off of a configured google sheet.
 
+# Demo
+
+![](Web/wwwroot/images/demo.gif =100x20)
+<img src="Web/wwwroot/images/demo.gif" style="width:400px"/>
+
 ## Instructions
 
 Highlighted portion of the url in the image below represents the **google sheet id**. Publish your sheet (File -> Publish to Web) and use the first two columns to build a mapping for your card deck. 🤓
