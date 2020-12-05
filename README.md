@@ -1,3 +1,4 @@
+   ![](wwwroot/images/favicon.png)ocab
 # Vocab
 
 A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple choice flashcards based off of a configured google sheet.
@@ -20,4 +21,6 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
     ![](wwwroot/images/home.png)
 
-### Feedback is appreciated
+### Why ?
+
+I like playing video games with spanish audio/text and am always picking up on new words as I do.  I figured why not collect them into some app to help me remember them, hence this Vocab app.  Ideally I'd like to get these words from a google translate API that gives me access to my phrasebook but it [doesn't seem like that's possible](https://issuetracker.google.com/issues/35902966) ... yet.  For now the google sheet solution works well :)
