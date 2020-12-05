@@ -6,9 +6,7 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
 [zano.azurewebsites.net](https://zano.azurewebsites.net)
 
-<div style="width:400px !important;">
-    <img src="Web/wwwroot/images/demo.gif"/>
-</div>
+<img src="Web/wwwroot/images/demo.gif" width=400/>
 
 ## Instructions
 
@@ -18,7 +16,7 @@ A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple 
 
 2. Publish your google sheet through (File --> Publish to Web)
 
-3. Enter the **google sheet id** into the input at the home page of and hit the start button.
+3. Enter the **google sheet id** into the initial input of the Vocab site and hit the start button.
 
     ![](Web/wwwroot/images/home.png)
 
