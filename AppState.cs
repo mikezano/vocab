@@ -98,7 +98,8 @@ namespace Web
 
         public async void Reset()
         {
-            await js.InvokeVoidAsync("Web.clearStorage");
+            await js.InvokeVoidAsync("Web.clearStorageItem", "translations");
+            await js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");
             Translations = new List<TranslationItem>();
             SheetId = null;
             NotifyStateChanged();

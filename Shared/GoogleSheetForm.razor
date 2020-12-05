@@ -29,10 +29,20 @@
     public string SheetId { get; set; } = "16V5nBKof9nm-mWfGP0V8WNxzA6cNibvSskgdjhQY0uc";
     private ElementReference ReferenceToInputControl;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var prev = await JS.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
+        if(prev != null)
+        {
+            SheetId = prev;
+        }
+
+    }
 
     public void GetGoogleSheetId()
     {
         JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id", SheetId);
+        JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id-prev", SheetId);
         AppState.SetSheetId(SheetId);
     }
 }

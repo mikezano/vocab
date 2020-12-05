@@ -32,3 +32,7 @@ Web.getStorageItemAsString = (name) => {
 Web.clearStorage = () => {
     localStorage.clear();
 };
+
+Web.clearStorageItem = (name) => {
+    localStorage.removeItem(name);
+};
