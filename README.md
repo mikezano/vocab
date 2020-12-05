@@ -1,5 +1,5 @@
-   ![](wwwroot/images/favicon.png)ocab
-# Vocab
+   
+# ![](wwwroot/images/favicon.png)ocab  
 
 A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple choice flashcards based off of a configured google sheet.
 
