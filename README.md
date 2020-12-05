@@ -2,15 +2,11 @@
 
 A .NET 5 Blazor WebAssembly project that allows you to create a set of multiple choice flashcards based off of a configured google sheet.
 
-<br/>
-
 # Demo
 
 [zano.azurewebsites.net](https://zano.azurewebsites.net)
 
 <img src="Web/wwwroot/images/demo.gif" style="width:400px !important;"/>
-<br/>
-<br/>
 
 ## Instructions
 
