@@ -3,13 +3,22 @@
 
 @if (AppState.Translations != null)
 {
-    <div class="stats mr-2" title="Correct Responses">
-        <span class="oi oi-check text-success"></span> 
+<div class="d-flex flex-column stats mr-2">
+    <div title="Correct Responses">
+        <span class="oi oi-check text-success"></span>
         <span>:</span>
         <span>@AppState.GuessedCorrectlyCount</span>
         <span>/</span>
         <span>@AppState.Translations.Count</span>
+
     </div>
+    <div class="text-right">
+        <span class="oi oi-circle-x text-danger"></span>
+        <span>@AppState.IncorrectGuesses</span>
+    </div>
+</div>
+
+
 }
 
 

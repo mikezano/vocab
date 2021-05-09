@@ -13,6 +13,7 @@ namespace Web
     {
         public List<TranslationItem> Translations { get; private set; }
         public string SheetId { get; private set; } = null;
+        public int IncorrectGuesses { get; set; } = 0;
         private Random _random = new Random();
 
         private IJSRuntime js;
@@ -48,6 +49,12 @@ namespace Web
         {
             Translations[index].IsGuessed = true;
             js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            NotifyStateChanged();
+        }
+        public void UpdateIncorrectGuesses()
+        {
+            IncorrectGuesses++;
+            js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses",IncorrectGuesses);
             NotifyStateChanged();
         }
 

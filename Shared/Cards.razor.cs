@@ -70,6 +70,10 @@ namespace Web.Shared
             {
                 AppState.UpdateCorrectGuess(indexOfWord);
             }
+            else
+            {
+                AppState.UpdateIncorrectGuesses();
+            }
 
             //Next word has to be not guessed and not on screen
             //var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Data.FindIndex(f => f.Translation == w.Spanish) == -1).ToList();
