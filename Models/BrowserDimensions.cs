@@ -9,7 +9,7 @@ namespace Web.Models
     {
         private static int CARD_HEIGHT = 208;
         private static int CARD_WIDTH = 300;
-        private static int TITLE_HEIGHT = 57;
+        private static int TITLE_HEIGHT = 70;
         private static int FOOTER_HEIGHT = 50;
 
         public int Width { get; set; }
