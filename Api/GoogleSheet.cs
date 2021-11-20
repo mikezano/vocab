@@ -20,7 +20,9 @@ namespace Web.Api
 
     public class GoogleSheet
     {
-        private static string BASE_URL = "https://spreadsheets.google.com/feeds/cells/{0}/od6/public/basic?alt=json";
+
+        //google sheets v4 api
+        private static string BASE_URL = "https://docs.google.com/spreadsheets/d/{0}/gviz/tq";
         private readonly HttpClient client;
 
         public GoogleSheet(HttpClient client)
@@ -31,7 +33,9 @@ namespace Web.Api
         public async Task<List<TranslationItem>> GetEntries(string sheetId)
         {
             string url = String.Format(BASE_URL, sheetId);
-            var entries = await client.GetFromJsonAsync<object>(url);
+            var entries = await client.GetStringAsync(url);
+            entries = entries.Substring(47);
+            entries = entries.Remove(entries.Length - 2);
             var translations = FormatWords(entries);
             return translations;
         }
@@ -40,23 +44,13 @@ namespace Web.Api
         {
             JObject o = JObject.Parse(json.ToString());
 
-            List<GoogleSheetCell> cells =
-                o.SelectToken("feed.entry")
-                .Select(s => new GoogleSheetCell
-                {
-                    CellName = (string)s.SelectToken("title.$t"),
-                    CellValue = (string)s.SelectToken("content.$t")
-                }).ToList();
-
-
-            var columnA = cells.Where(w => w.CellName.StartsWith('A') && w.CellName != "A1").Select(s => s.CellValue).ToList();
-            var columnB = cells.Where(w => w.CellName.StartsWith('B') && w.CellName != "B1").Select(s => s.CellValue).ToList();
-
             var translations = new List<TranslationItem>();
-            for(int i=0; i < columnA.Count; i++)
+            translations = o.SelectToken("table.rows").Select(s => new TranslationItem
             {
-                translations.Add(new TranslationItem { Spanish = columnA[i], English = columnB[i] });
-            }
+                Spanish = (string)s.SelectToken("c[0].v"),
+                English = (string)s.SelectToken("c[1].v")
+            }).ToList();
+
             return translations;
         }
     }
