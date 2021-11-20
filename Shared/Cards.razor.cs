@@ -13,6 +13,8 @@ namespace Web.Shared
     public partial class Cards
     {
         public List<TranslationMultipleChoices> MultipleChoiceSets { get; set; } = new List<TranslationMultipleChoices>();
+        public string Height { get; set; }
+        public string Width { get; set; }
 
         [Inject]
         public AppState AppState { get; set; }
@@ -26,7 +28,7 @@ namespace Web.Shared
         private int _visibleCardCount = 0;
 
         protected override async Task OnInitializedAsync()
-        { 
+        {
             var storageTranslations = await JS.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
 
             if (storageTranslations == null)
@@ -43,6 +45,9 @@ namespace Web.Shared
 
             var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
             _visibleCardCount = dimensions.GetVisibleCardCount();
+
+            Height = $"{dimensions.Height}px";
+            Width = $"{dimensions.Width}px";
 
             MultipleChoiceSets = AppState.GetMultipleChoiceSets(_visibleCardCount);
         }

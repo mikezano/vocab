@@ -1,5 +1,6 @@
 ﻿
 
+
 <div class="cards d-flex flex-wrap justify-content-center">
     @if (MultipleChoiceSets.Count > 0)
     {
@@ -11,7 +12,9 @@
     }
     else
     {
-        <h5>One moment ...</h5>
+       <div class="one-moment" style="height: @Height; width: @Width;">
+            <h1 >One moment ...</h1>
+        </div>
     }
 
 </div>
