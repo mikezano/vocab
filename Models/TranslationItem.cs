@@ -7,8 +7,18 @@ namespace Web.Models
 {
     public class TranslationItem
     {
-        public string Spanish { get; set; } = "----";
-        public string English { get; set; }
+        public string From { get; set; } = "----";
+        public string To { get; set; }
         public bool IsGuessed { get; set; }
+
+        public TranslationItem Clone()
+        {
+            return new TranslationItem()
+            {
+                From = From,
+                To = To,
+                IsGuessed = IsGuessed   
+            };
+        }
     }
 }

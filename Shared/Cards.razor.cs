@@ -65,7 +65,7 @@ namespace Web.Shared
 
         public void OnCorrect(Answer answer)
         {
-            int indexOfWord = AppState.Translations.FindIndex(f => f.Spanish == answer.Translation);
+            int indexOfWord = AppState.Translations.FindIndex(f => f.From == answer.Translation);
             if (answer.IsCorrect)
             {
                 AppState.UpdateCorrectGuess(indexOfWord);
@@ -78,7 +78,7 @@ namespace Web.Shared
             //Next word has to be not guessed and not on screen
             //var notGuessed = AppState.Words.Where(w => !w.IsGuessed && Data.FindIndex(f => f.Translation == w.Spanish) == -1).ToList();
             var notGuessed = AppState.Translations.Where(w => !w.IsGuessed).ToList();
-            var notOnScreen = notGuessed.Where(w => MultipleChoiceSets.FindIndex(fi => fi.Translation == w.Spanish) == -1).ToList();
+            var notOnScreen = notGuessed.Where(w => MultipleChoiceSets.FindIndex(fi => fi.Translation == w.From) == -1).ToList();
             if (notOnScreen.Count == 0 && !answer.IsCorrect)
             {
                 notOnScreen.Add(AppState.Translations[indexOfWord]);

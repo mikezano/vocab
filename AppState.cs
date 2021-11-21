@@ -43,6 +43,15 @@ namespace Web
             NotifyStateChanged();
         }
 
+        public void Flip()
+        {
+            Translations.ForEach(t => {
+                var copy = t.Clone();
+                t.From = copy.To;
+                t.To = copy.From;
+            });
+        }
+
         public int GuessedCorrectlyCount => Translations.Count(c => c.IsGuessed);
 
         public void UpdateCorrectGuess(int index)
@@ -77,18 +86,18 @@ namespace Web
         {
             var wrongAnswers =
                 Translations
-                .Where(w => w.Spanish != word.Spanish)
+                .Where(w => w.From != word.From)
                 .OrderBy(ob => _random.Next())
-                .Select(s => s.English)
+                .Select(s => s.To)
                 .Take(wrongAnswerCount)
                 .ToList();
 
-            wrongAnswers.Add(word.English);
+            wrongAnswers.Add(word.To);
             var allAnswers = wrongAnswers
                 .OrderBy(ob => _random.Next())
                 .ToList();
 
-            return new TranslationMultipleChoices { Choices = allAnswers, Answer = word.English, Translation = word.Spanish };
+            return new TranslationMultipleChoices { Choices = allAnswers, Answer = word.To, Translation = word.From };
         }
 
         public void ReSetGuesses()
@@ -96,6 +105,7 @@ namespace Web
             Translations.ForEach(fe => { fe.IsGuessed = false; });
             js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyReStart();
+            IncorrectGuesses = 0;
         }
 
         public void Shuffle()

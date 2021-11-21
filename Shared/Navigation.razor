@@ -1,18 +1,16 @@
 ﻿@inject AppState AppState
 
 
-<button class="navigation btn btn-sm btn-default m-1" @onclick="Home">
-    @if (AppState.SheetId == null)
-    {
 
-    }
-    else
-    {
+@if (AppState.SheetId != null)
+{
+    <button class="navigation btn btn-sm btn-default m-1" @onclick="Home" title="Home.">
         <i class="oi oi-home"></i>
-    }
-
-</button>
-
+    </button>
+    <button class="navigation btn btn-sm btn-default m-1" @onclick="Flip" title="Flip translations.">
+        <i class="oi oi-loop"></i>
+    </button> 
+}
 
 
 @code {
@@ -30,5 +28,11 @@
     public void Home()
     {
         AppState.Reset();
+    }
+
+    public void Flip()
+    {
+        AppState.Flip();
+        AppState.ReSetGuesses();
     }
 }

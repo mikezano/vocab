@@ -47,8 +47,8 @@ namespace Web.Api
             var translations = new List<TranslationItem>();
             translations = o.SelectToken("table.rows").Select(s => new TranslationItem
             {
-                Spanish = (string)s.SelectToken("c[0].v"),
-                English = (string)s.SelectToken("c[1].v")
+                From = (string)s.SelectToken("c[0].v"),
+                To = (string)s.SelectToken("c[1].v")
             }).ToList();
 
             return translations;
