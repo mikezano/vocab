@@ -1,0 +1,86 @@
+﻿﻿.card {
+    position: relative;
+    perspective: 500px;
+    width: 16rem;
+    height: 11rem;
+    background: none;
+}
+
+.card-body {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    opacity: 1;
+    transform-style: preserve-3d;
+    background-color: white;
+    border: .1rem solid transparent;
+}
+
+.card-answer-reveal .card-body {
+    animation: answer-reveal 1.5s ease-in forwards;
+}
+
+.card-answer-wrong .card-body {
+    animation: answer-wrong 1.5s ease-in forwards;
+}
+
+.card-half-flip-start .card-body {
+    animation: half-flip-start .25s ease-in forwards;
+}
+
+.card-half-flip-end .card-body {
+    animation: half-flip-end .25s ease-in forwards;
+}
+
+.card-choice {
+    height: 2rem;
+}
+
+    .card-choice label {
+        font-size: 1.6rem;
+    }
+
+.card-front, .card-back {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: white;
+    color: #03446A;
+    text-align: center;
+    backface-visibility: hidden;
+}
+
+.card-front {
+    border-width: .2rem !important;
+    transition: border 0.5s ease-in;
+    background: linear-gradient( 180deg, transparent 0%, rgba(8, 146, 208, 0.5) 4.5%, #0892d0 5%, rgba(8, 146, 208, 0.5) 5.5%, transparent 10% ), transparent;
+    background-repeat: repeat;
+    background-size: 100% 2rem;
+    background-position: 0 .1rem;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    /*    background-color: orange;
+    color: white;*/
+}
+
+.card-word {
+    border-width: .2rem !important;
+}
+
+.card-input {
+    height: 2rem;
+    border: .1rem dashed gray;
+}
+
+.border-custom {
+    border: 1rem solid #ddd;
+}
+
+
+
+.border-success-animate {
+    border: 1rem solid green;
+}

@@ -1,5 +1,6 @@
 ﻿@page "/";
 @using Vocab.Components
+@using Vocab.Models
 @using Vocab.State
 @inject IJSRuntime JS
 @inject AppState AppState
@@ -10,6 +11,7 @@
 @if (AppState.SheetId == null)
 {
     <GoogleSheetForm />
+    <Card Id="0343920" MultipleChoices="@Choices"/>
 }
 else
 {
@@ -23,3 +25,11 @@ else
 
 }
 
+@code{
+    public TranslationMultipleChoices Choices { get; set; } = new TranslationMultipleChoices
+        {
+            Answer = "YO",
+            Word = "Hello",
+            Choices = new List<string> { "Hello", "World", "YO", "YOLO" }
+        };
+}
