@@ -1,20 +1,25 @@
 ﻿@page "/";
+@using Vocab.Components
+@using Vocab.State
+@inject IJSRuntime JS
+@inject AppState AppState
 
-<Navigation></Navigation>
+@* <Navigation></Navigation> *@
 <h1 class="text-center  p-0 m-0 vocab-title">Vocab</h1>
+<Fadebox />
 @if (AppState.SheetId == null)
 {
-    <GoogleSheetForm></GoogleSheetForm>
+    <GoogleSheetForm />
 }
 else
 {
-    <Cards></Cards>
+    <h1>No Sheet</h1>
+    @* <Cards></Cards>
     <div class="d-flex justify-content-center">
         <button class="btn btn-lg btn-primary mr-1" @onclick="ReStart">Re-Start</button>
         <button class="btn btn-lg btn-success ml-1" @onclick="Shuffle">Shuffle</button>
     </div>
-    <Stats></Stats>
+    <Stats></Stats> *@
 
 }
-
 

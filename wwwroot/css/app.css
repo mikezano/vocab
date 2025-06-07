@@ -1,10 +1,10 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
 
 
 html, body {
     font-family: 'Nerko One', cursive;
-    background-color:#f2f2f2;
+    background-color: #f2f2f2;
 }
 
 a, .btn-link {
@@ -96,19 +96,39 @@ a, .btn-link {
     }
 
     20%,100% {
-        border:.1rem solid transparent;
+        border: .1rem solid transparent;
         transform: rotateY(180deg);
     }
-    29% {transform: rotateY(180deg) translateX(0);}
-    30% {transform: rotateY(180deg) translateX(-.3rem);}
-    35% {transform: rotateY(180deg) translateX(.3rem);}
-    40% {transform: rotateY(180deg) translateX(-.2rem);}
-    45% {transform: rotateY(180deg) translateX(.2rem);}
-    50% {transform: rotateY(180deg) translateX(-.1rem);}
-    55% {transform: rotateY(180deg) translateX(.1rem);}
 
-    60%{
-        border:.1rem solid red;
+    29% {
+        transform: rotateY(180deg) translateX(0);
     }
 
+    30% {
+        transform: rotateY(180deg) translateX(-.3rem);
+    }
+
+    35% {
+        transform: rotateY(180deg) translateX(.3rem);
+    }
+
+    40% {
+        transform: rotateY(180deg) translateX(-.2rem);
+    }
+
+    45% {
+        transform: rotateY(180deg) translateX(.2rem);
+    }
+
+    50% {
+        transform: rotateY(180deg) translateX(-.1rem);
+    }
+
+    55% {
+        transform: rotateY(180deg) translateX(.1rem);
+    }
+
+    60% {
+        border: .1rem solid red;
+    }
 }

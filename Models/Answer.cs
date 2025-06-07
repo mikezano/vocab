@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Web.Models
+﻿namespace Vocab.Models
 {
     public class Answer
     {
-        public string Value { get; set; }
-        public string Translation { get; set; }
+        public required string Value { get; set; }
+        public required string Translation { get; set; }
         public int ReplacementIndex { get; set; }
         public bool IsCorrect { get; set; }
     }

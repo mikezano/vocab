@@ -1,21 +1,11 @@
-﻿
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Web.Models;
-
-
-
-namespace Web.Api
+﻿using Newtonsoft.Json.Linq;
+using Vocab.Models;
+namespace Vocab.Api
 {
     public class GoogleSheetCell
     {
-        public string CellName { get; set; }
-        public string CellValue { get; set; }
+        public required string CellName { get; set; }
+        public required string CellValue { get; set; }
     }
 
     public class GoogleSheet
@@ -42,13 +32,28 @@ namespace Web.Api
 
         public List<TranslationItem> FormatWords(object json)
         {
-            JObject o = JObject.Parse(json.ToString());
+            ArgumentNullException.ThrowIfNull(json, nameof(json));
+            string jsonString = json.ToString() ?? 
+                throw new ArgumentException("json.ToString() returned null", nameof(json)); 
+            JObject jsonObject = JObject.Parse(jsonString);
+
+            var rows = jsonObject.SelectToken("table.rows") ??
+                throw new ArgumentException("JSON does not contain 'table.rows' token", nameof(json));
 
             var translations = new List<TranslationItem>();
-            translations = o.SelectToken("table.rows").Select(s => new TranslationItem
+            translations = rows.Select(s =>
             {
-                From = (string)s.SelectToken("c[0].v"),
-                To = (string)s.SelectToken("c[1].v")
+                var word = s.SelectToken("c[0].v")?.ToString() ??
+                    throw new ArgumentException("Failed to find word in JSON");
+                var translation = s.SelectToken("c[1].v")?.ToString() ??
+                    throw new ArgumentException("Failed to find translation in JSON");
+
+                return new TranslationItem()
+                {
+                    Word = word,
+                    Translation = translation,
+                };
+
             }).ToList();
 
             return translations;

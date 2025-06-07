@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Web.Models
+﻿namespace Vocab.Models
 {
     public class TranslationItem
     {
-        public string From { get; set; } = "----";
-        public string To { get; set; }
-        public bool IsGuessed { get; set; }
+        public required string Word { get; set; }
+        public required string Translation { get; set; }
+        public bool IsGuessed { get; set; } = false;
 
         public TranslationItem Clone()
         {
             return new TranslationItem()
             {
-                From = From,
-                To = To,
-                IsGuessed = IsGuessed   
+                Word = Word,
+                Translation = Translation,
+                IsGuessed = IsGuessed
             };
         }
     }

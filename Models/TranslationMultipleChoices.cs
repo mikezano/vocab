@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Web.Models
+﻿namespace Vocab.Models
 {
     public class TranslationMultipleChoices
     {
-        public string Answer { get; set; }
-        public string Translation { get; set; }
-        public List<string> Choices { get; set; }
+        public required string Answer { get; set; }
+        public required string Word { get; set; }
+        public required List<string> Choices { get; set; }
     }
 }

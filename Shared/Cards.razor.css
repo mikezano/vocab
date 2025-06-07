@@ -1,8 +1,0 @@
-﻿.one-moment{
-    height:calc(100vh - 320px);
-    width:calc(100vw);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
