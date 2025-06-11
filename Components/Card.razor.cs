@@ -19,8 +19,21 @@ namespace Vocab.Components
 
         private ElementReference ReferenceToInputControl;
 
+        private ElementReference _cardRef;
+        private DotNetObjectReference<Card>? _dotNetRef;
+
         public bool? IsCorrect { get; set; }
         public string CurrentGuess { get; set; } = String.Empty;
+
+
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                _dotNetRef = DotNetObjectReference.Create(this);
+            }
+            return Task.CompletedTask; // Ensure all code paths return a Task
+        }
 
         public async Task OnRevealComplete(string animationName)
         {
@@ -49,7 +62,7 @@ namespace Vocab.Components
                 IsCorrect = IsCorrect.HasValue && IsCorrect.Value == true
             });
 
-            await JSRuntime.InvokeVoidAsync("Web.clearRadioButtons");
+            await JS.InvokeVoidAsync("Web.clearRadioButtons");
             CardHalfFlipEnd = "card-half-flip-end";
         }
 
@@ -61,17 +74,29 @@ namespace Vocab.Components
             CardHalfFlipEnd = String.Empty;
         }
 
-        private void Guess(ChangeEventArgs args)
+        private async void Guess(ChangeEventArgs args)
         {
+            Console.WriteLine($"Guess: {args.Value}");
             var answer = args.Value.ToString();
             //JSRuntime.InvokeVoidAsync("Vocab.setFocus", ReferenceToInputControl);
             IsCorrect = answer == MultipleChoices.Answer;
             CardAnimationClass = SetCardAnimationClass();
+
+            //await needed
+            await JS.InvokeVoidAsync("animationInterop.onAnimationEnd", _cardRef, _dotNetRef, nameof(OnAnimationRevealEnd));
         }
 
+        [JSInvokable]
+        public void OnAnimationRevealEnd()
+        {
+            //StatusMessage = "Animation has finished!";
+            Console.WriteLine("Animation has finished!");
+            StateHasChanged(); // Refresh UI
+        }
 
         private string SetCardAnimationClass()
         {
+            Console.WriteLine($"Setting card animation class for IsCorrect: {IsCorrect}");
             string result = String.Empty;
             if (IsCorrect.HasValue)
             {

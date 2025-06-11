@@ -1,7 +1,31 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JS
 
-<div class="card border-0 m-3">
-    <div class="card-body p-0">
+<div class="card border-0 m-3 @CardAnimationClass" @ref="_cardRef">
+    <div class="card-body p-0" >
+        <div class="front">
+            <h1 class="border-bottom border-danger word">Translation</h1>
+            <div class="mt-3 px-4 choices">
+                @foreach (var choice in MultipleChoices.Choices)
+                {
+                    var id = MultipleChoices.Word + "_" + choice;
+                    <div class="d-flex align-items-center choice">
+                        <input type="radio"
+                               name="@MultipleChoices.Word"
+                               value="@choice"
+                               id="@id"
+                               @onchange="Guess" />
+                        <label class="m-lg-2 my-0" for="@id">@choice</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="back d-flex align-items-center justify-content-center">
+            <h2>@MultipleChoices.Answer</h2>
+        </div>
+    </div>
+
+    
+    @* <div class="card-body p-0 front">
         <div class="card-front">
             <h1 class="card-word border-bottom border-danger bg-light">
                 Translation
@@ -24,10 +48,13 @@
                         </div>
                     }
                 </div>
-            }
 
+            }
         </div>
-    </div>
+        <div class="card-back d-flex align-items-center justify-content-center">
+            <h2>@MultipleChoices.Answer</h2>
+        </div>
+    </div> *@
 </div>
 
 @code{
