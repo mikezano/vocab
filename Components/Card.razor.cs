@@ -13,9 +13,21 @@ namespace Vocab.Components
         [Parameter]
         public EventCallback<Answer> OnCorrect { get; set; }
 
-        public string CardAnimationClass { get; set; } = String.Empty;
         public string CardHalfFlipStart { get; set; } = String.Empty;
         public string CardHalfFlipEnd { get; set; } = String.Empty;
+
+        public Dictionary<string, bool> AnimationClasses = new Dictionary<string, bool>
+        {
+            { "card-reveal", false },
+            { "card-incorrect", false },
+            { "card-correct", false },
+            { "card-conceal", false },
+        };
+
+        public string ActiveAnimationClasses => 
+            string.Join(
+                " ", 
+                AnimationClasses.Where(kvp => kvp.Value).Select(kvp => kvp.Key));
 
         private ElementReference ReferenceToInputControl;
 
@@ -47,7 +59,6 @@ namespace Vocab.Components
         public async Task OnWrongAnswerComplete()
         {
             IsCorrect = null;
-            CardAnimationClass = SetCardAnimationClass();
             CardHalfFlipStart = "card-half-flip-start";
         }
 
@@ -69,40 +80,58 @@ namespace Vocab.Components
         public async Task OnHalfFlipEndComplete(string animationName)
         {
             IsCorrect = null;
-            CardAnimationClass = SetCardAnimationClass();
             CardHalfFlipStart = String.Empty;
             CardHalfFlipEnd = String.Empty;
         }
 
+        private async Task SetupNextAnimation(string nextAnimationMethod)
+        {
+            await JS.InvokeVoidAsync(
+                "animationInterop.onAnimationEnd",
+                _cardRef,
+                _dotNetRef,
+                nextAnimationMethod
+            );
+        }
+
         private async void Guess(ChangeEventArgs args)
         {
-            Console.WriteLine($"Guess: {args.Value}");
             var answer = args.Value.ToString();
-            //JSRuntime.InvokeVoidAsync("Vocab.setFocus", ReferenceToInputControl);
             IsCorrect = answer == MultipleChoices.Answer;
-            CardAnimationClass = SetCardAnimationClass();
 
-            //await needed
-            await JS.InvokeVoidAsync("animationInterop.onAnimationEnd", _cardRef, _dotNetRef, nameof(OnAnimationRevealEnd));
+            await SetupNextAnimation(nameof(OnAnimationRevealEnd));
+            AnimationClasses["card-reveal"] = true;
+            StateHasChanged(); // Refresh UI so that classes are applied and animation triggered           
         }
 
         [JSInvokable]
-        public void OnAnimationRevealEnd()
+        public async void OnAnimationRevealEnd()
         {
-            //StatusMessage = "Animation has finished!";
-            Console.WriteLine("Animation has finished!");
+            if(!IsCorrect.HasValue)
+            {
+                Console.WriteLine("Animation Reveal Ended without correctness!");
+                return;
+            }
+
+            await SetupNextAnimation(nameof(OnAnimationCorrectnessEnd));
+            AnimationClasses[IsCorrect.Value ? "card-correct": "card-incorrect"] = true;
             StateHasChanged(); // Refresh UI
         }
 
-        private string SetCardAnimationClass()
+
+        [JSInvokable]
+        public async void OnAnimationCorrectnessEnd()
         {
-            Console.WriteLine($"Setting card animation class for IsCorrect: {IsCorrect}");
-            string result = String.Empty;
-            if (IsCorrect.HasValue)
-            {
-                result = IsCorrect.Value ? "card-answer-reveal" : "card-answer-wrong";
-            }
-            return result;
+            await SetupNextAnimation(nameof(OnAnimationConcealEnd));
+            AnimationClasses["card-conceal"] = true;
+            StateHasChanged(); // Refresh UI       
+        }
+
+        [JSInvokable]
+        public  void OnAnimationConcealEnd()
+        {
+            AnimationClasses.Keys.ToList().ForEach(key => AnimationClasses[key] = false);
+            StateHasChanged(); // Refresh UI   
         }
     }
 }
