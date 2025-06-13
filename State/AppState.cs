@@ -1,11 +1,22 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using Vocab.Api;
 using Vocab.Models;
 
 namespace Vocab.State
 {
     public class AppState
     {
+        private readonly GoogleSheet _googleSheet;
+        private readonly IJSRuntime _js;
+        public AppState(GoogleSheet googleSheet, IJSRuntime jsRuntime)
+        {
+            _googleSheet = googleSheet ?? throw new ArgumentNullException(nameof(googleSheet));
+            _js = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
+        }
+        //[Inject]
+        //public required GoogleSheet GoogleSheet { get; set; }
         public List<TranslationItem> Translations { get; private set; } = new List<TranslationItem>();
         public string? SheetId { get; private set; }
         public int IncorrectGuesses { get; set; } = 0;
@@ -16,20 +27,24 @@ namespace Vocab.State
         public event Action? OnChange;
         public event Action? OnSetSheetId;
         public event Action? OnReStart;
+        public event Action? OnTranslationsLoaded;
 
         private void NotifyStateChanged() => OnChange?.Invoke();
         private void NotifySheetIdChanged() => OnSetSheetId?.Invoke();
         private void NotifyReStart() => OnReStart?.Invoke();
+        private void NotifyTranslationsLoaded() => OnTranslationsLoaded?.Invoke();
 
         public void SetJsInterop(IJSRuntime js)
         {
             this.js = js;
         }
 
-        public void SetSheetId(string sheetId)
+        public async void SetSheetId(string sheetId)
         {
             SheetId = sheetId;
             NotifySheetIdChanged();
+            Translations = await _googleSheet.GetEntries(SheetId);
+            NotifyTranslationsLoaded();
         }
 
         public void SetWords(List<TranslationItem> words)

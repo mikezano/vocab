@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Vocab.Models;
 namespace Vocab.Api
 {
@@ -55,7 +56,7 @@ namespace Vocab.Api
                 };
 
             }).ToList();
-
+            Console.WriteLine(JsonConvert.SerializeObject(translations, Formatting.Indented));
             return translations;
         }
     }

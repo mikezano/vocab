@@ -1,0 +1,37 @@
+﻿@using Vocab.State
+@using Vocab.Models
+@inject AppState AppState
+
+
+<div class="d-flex flex-wrap justify-content-center">
+    @if (AppState.Translations.Any())
+    {
+        @foreach (var (choice, index) in Choices.Select((value, i) => (value, i)))
+        {
+            <Card MultipleChoices="@choice" Id="@index" OnCorrect="HandleCorrect" />
+        }
+    }
+</div>
+
+@code {
+    private List<TranslationMultipleChoices> Choices { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        AppState.OnTranslationsLoaded += LoadTranslations;
+    }   
+
+    private void LoadTranslations()
+    {
+     
+        Choices = AppState.GetMultipleChoiceSets(4);
+        StateHasChanged();
+    }
+
+    private void HandleCorrect(Answer answer)
+    {
+        // AppState.OnCorrectChoice(choice);
+        // Choices.Remove(choice);
+        // StateHasChanged();
+    }
+}

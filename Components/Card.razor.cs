@@ -13,8 +13,6 @@ namespace Vocab.Components
         [Parameter]
         public EventCallback<Answer> OnCorrect { get; set; }
 
-        public string CardHalfFlipStart { get; set; } = String.Empty;
-        public string CardHalfFlipEnd { get; set; } = String.Empty;
 
         public Dictionary<string, bool> AnimationClasses = new Dictionary<string, bool>
         {
@@ -28,8 +26,6 @@ namespace Vocab.Components
             string.Join(
                 " ", 
                 AnimationClasses.Where(kvp => kvp.Value).Select(kvp => kvp.Key));
-
-        private ElementReference ReferenceToInputControl;
 
         private ElementReference _cardRef;
         private DotNetObjectReference<Card>? _dotNetRef;
@@ -45,43 +41,6 @@ namespace Vocab.Components
                 _dotNetRef = DotNetObjectReference.Create(this);
             }
             return Task.CompletedTask; // Ensure all code paths return a Task
-        }
-
-        public async Task OnRevealComplete(string animationName)
-        {
-            if (IsCorrect.Value)
-            {
-                CurrentGuess = "";
-                CardHalfFlipStart = "card-half-flip-start";
-            }
-        }
-
-        public async Task OnWrongAnswerComplete()
-        {
-            IsCorrect = null;
-            CardHalfFlipStart = "card-half-flip-start";
-        }
-
-        public async Task OnHalfFlipStartComplete(string cssAnimationName)
-        {
-
-            await OnCorrect.InvokeAsync(new Answer
-            {
-                Word = MultipleChoices.Answer,
-                Translation = MultipleChoices.Word,
-                ReplacementIndex = Id,
-                IsCorrect = IsCorrect.HasValue && IsCorrect.Value == true
-            });
-
-            await JS.InvokeVoidAsync("Web.clearRadioButtons");
-            CardHalfFlipEnd = "card-half-flip-end";
-        }
-
-        public async Task OnHalfFlipEndComplete(string animationName)
-        {
-            IsCorrect = null;
-            CardHalfFlipStart = String.Empty;
-            CardHalfFlipEnd = String.Empty;
         }
 
         private async Task SetupNextAnimation(string nextAnimationMethod)
