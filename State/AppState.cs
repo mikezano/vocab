@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using System;
 using Vocab.Api;
 using Vocab.Models;
 
@@ -10,8 +11,10 @@ namespace Vocab.State
     {
         private readonly GoogleSheet _googleSheet;
         private readonly IJSRuntime _js;
+
         public AppState(GoogleSheet googleSheet, IJSRuntime jsRuntime)
         {
+            Console.WriteLine("AppState constructor called");
             _googleSheet = googleSheet ?? throw new ArgumentNullException(nameof(googleSheet));
             _js = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
         }
@@ -22,7 +25,7 @@ namespace Vocab.State
         public int IncorrectGuesses { get; set; } = 0;
         private Random _random = new Random();
 
-        private IJSRuntime js;
+
 
         public event Action? OnChange;
         public event Action? OnSetSheetId;
@@ -34,18 +37,33 @@ namespace Vocab.State
         private void NotifyReStart() => OnReStart?.Invoke();
         private void NotifyTranslationsLoaded() => OnTranslationsLoaded?.Invoke();
 
-        public void SetJsInterop(IJSRuntime js)
+
+        public async Task InitializeAsync()
         {
-            this.js = js;
+            try
+            {
+                var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
+                Console.WriteLine($"Stored Sheet ID: {storedSheetId}");
+                if (!string.IsNullOrEmpty(storedSheetId))
+                {
+                    await SetSheetId(storedSheetId);
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error initializing AppState: {ex.Message}");
+            }   
         }
 
-        public async void SetSheetId(string sheetId)
+        public async Task SetSheetId(string sheetId)
         {
             SheetId = sheetId;
             NotifySheetIdChanged();
             Translations = await _googleSheet.GetEntries(SheetId);
             NotifyTranslationsLoaded();
         }
+
 
         public void SetWords(List<TranslationItem> words)
         {
@@ -67,13 +85,13 @@ namespace Vocab.State
         public void UpdateCorrectGuess(int index)
         {
             Translations[index].IsGuessed = true;
-            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
         }
         public void UpdateIncorrectGuesses()
         {
             IncorrectGuesses++;
-            js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", IncorrectGuesses);
+            _js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", IncorrectGuesses);
             NotifyStateChanged();
         }
 
@@ -102,7 +120,7 @@ namespace Vocab.State
                 .Take(wrongAnswerCount)
                 .ToList();
 
-            wrongAnswers.Add(item.Word);
+            wrongAnswers.Add(item.Translation);
             var allAnswers = wrongAnswers
                 .OrderBy(ob => _random.Next())
                 .ToList();
@@ -115,10 +133,32 @@ namespace Vocab.State
             };
         }
 
+        //public void GetNext()
+        //{
+        //    var notGuessed = Translations.Where(w => !w.IsGuessed).ToList();
+        //    var notOnScreen = notGuessed.Where(w => MultipleChoiceSets.FindIndex(fi => fi.Translation == w.From) == -1).ToList();
+        //    if (notOnScreen.Count == 0 && !answer.IsCorrect)
+        //    {
+        //        notOnScreen.Add(AppState.Translations[indexOfWord]);
+        //    }
+
+        //    int nextIndex = random.Next(notOnScreen.Count);
+        //    TranslationItem nextWord = new TranslationItem();
+        //    if (notOnScreen.Count > 0)
+        //    {
+        //        nextWord = notOnScreen[nextIndex];
+        //        MultipleChoiceSets[answer.ReplacementIndex] = AppState.CreateCardMultipleChoices(nextWord, 2);
+        //    }
+        //    else
+        //    {
+        //        MultipleChoiceSets[answer.ReplacementIndex] = new TranslationMultipleChoices { Answer = "----", Choices = null, Translation = "----" };
+        //    }
+        //}
+
         public void ReSetGuesses()
         {
             Translations.ForEach(fe => { fe.IsGuessed = false; });
-            js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyReStart();
             IncorrectGuesses = 0;
         }
@@ -130,8 +170,8 @@ namespace Vocab.State
 
         public async void Reset()
         {
-            await js.InvokeVoidAsync("Web.clearStorageItem", "translations");
-            await js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");
+            await _js.InvokeVoidAsync("Web.clearStorageItem", "translations");
+            await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");
             Translations = new List<TranslationItem>();
             SheetId = null;
             NotifyStateChanged();

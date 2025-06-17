@@ -23,38 +23,6 @@
             <h2>@MultipleChoices.Answer</h2>
         </div>
     </div>
-
-    
-    @* <div class="card-body p-0 front">
-        <div class="card-front">
-            <h1 class="card-word border-bottom border-danger bg-light">
-                Translation
-            </h1>
-            
-            @if(MultipleChoices.Answer != null)
-            {
-                <div class="mt-3 px-4">
-                    @foreach(var choice in MultipleChoices.Choices)
-                    {
-                        var id = MultipleChoices.Word + "_" + choice;
-                        <div class="d-flex align-items-center card-choice">
-                            <input 
-                                type="radio"
-                                name="@MultipleChoices.Word"
-                                value="@choice"
-                                id="@id"
-                                @onchange="Guess" />
-                            <label class="m-lg-2 my-0" for="@id">@choice</label>
-                        </div>
-                    }
-                </div>
-
-            }
-        </div>
-        <div class="card-back d-flex align-items-center justify-content-center">
-            <h2>@MultipleChoices.Answer</h2>
-        </div>
-    </div> *@
 </div>
 
 @code{

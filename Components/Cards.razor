@@ -8,30 +8,56 @@
     {
         @foreach (var (choice, index) in Choices.Select((value, i) => (value, i)))
         {
-            <Card MultipleChoices="@choice" Id="@index" OnCorrect="HandleCorrect" />
+            <Card MultipleChoices="@choice" Id="@index" OnSelect="HandleGuess" OnFlipDone="HandleFlipDone" />
         }
     }
 </div>
 
 @code {
     private List<TranslationMultipleChoices> Choices { get; set; } = new();
+    private int _selectedCardIndex = -1;
+    private TranslationMultipleChoices? NextTranslation { get; set; }
 
     protected override void OnInitialized()
     {
-        AppState.OnTranslationsLoaded += LoadTranslations;
+        LoadTranslations();
     }   
 
     private void LoadTranslations()
     {
-     
         Choices = AppState.GetMultipleChoiceSets(4);
-        StateHasChanged();
     }
 
-    private void HandleCorrect(Answer answer)
+    private void HandleGuess((Answer answer, int cardId) args)
     {
-        // AppState.OnCorrectChoice(choice);
-        // Choices.Remove(choice);
-        // StateHasChanged();
+        if(args.answer.IsCorrect)
+        {
+            int index = AppState.Translations.FindIndex(i => i.Word == args.answer.Translation);
+            AppState.UpdateCorrectGuess(index);
+        }
+        else
+        {
+            AppState.UpdateIncorrectGuesses();
+        };
+
+        _selectedCardIndex = args.cardId;
+        NextTranslation = AppState.GetMultipleChoiceSets(1).FirstOrDefault();
+
+        if (NextTranslation != null)
+        {
+            Choices[_selectedCardIndex] = NextTranslation;
+
+        }
+        else
+        {
+            Choices.RemoveAt(_selectedCardIndex);
+        }
+    }
+
+    public void HandleFlipDone()
+    {
+        //Choices[_selectedCardIndex].Answer = NextTranslation?.Answer ?? string.Empty;
+        //Choices[_selectedCardIndex].Answer = "Yo";
+        StateHasChanged();
     }
 }

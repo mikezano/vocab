@@ -63,6 +63,10 @@
     animation: conceal 1s ease-in forwards;
 }
 
+.card.card-conceal .card-body .back{
+    display:none !important; /* bottstrap .d-flex is overriding*/
+}
+
 @keyframes reveal {
     100% {
         transform: rotateY(180deg);
@@ -71,7 +75,7 @@
 
 @keyframes answer-correct {
     0% { border: .1rem solid transparent; }
-    60%{ 
+    50%{ 
         box-shadow: 0 0 0.5rem green;
         border: 0.1rem solid green;
 
@@ -79,7 +83,7 @@
     20%, 80%{
         transform: rotateY(180deg) translateY(0); 
     }
-    50%{
+    40%, 60%{
         transform: rotateY(180deg) translateY(-.3rem);
     }
 }

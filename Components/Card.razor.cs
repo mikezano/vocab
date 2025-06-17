@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Threading.Tasks;
 using Vocab.Models;
 
 namespace Vocab.Components
@@ -11,7 +12,9 @@ namespace Vocab.Components
         [Parameter]
         public int Id { get; set; }
         [Parameter]
-        public EventCallback<Answer> OnCorrect { get; set; }
+        public EventCallback<(Answer Answer, int Id)> OnSelect { get; set; }
+        [Parameter]
+        public EventCallback OnFlipDone { get; set; }
 
 
         public Dictionary<string, bool> AnimationClasses = new Dictionary<string, bool>
@@ -81,15 +84,29 @@ namespace Vocab.Components
         [JSInvokable]
         public async void OnAnimationCorrectnessEnd()
         {
+            IsCorrect = null;
+            await OnSelect.InvokeAsync(
+                (
+                    new Answer
+                    {
+                        Word = MultipleChoices.Word,
+                        Translation = MultipleChoices.Answer,
+                        IsCorrect = IsCorrect.HasValue && IsCorrect.Value
+                    }, 
+                    Id
+                )
+            );
             await SetupNextAnimation(nameof(OnAnimationConcealEnd));
+            await JS.InvokeVoidAsync("Web.clearRadioButtons");
             AnimationClasses["card-conceal"] = true;
             StateHasChanged(); // Refresh UI       
         }
 
         [JSInvokable]
-        public  void OnAnimationConcealEnd()
+        public  async Task OnAnimationConcealEnd()
         {
             AnimationClasses.Keys.ToList().ForEach(key => AnimationClasses[key] = false);
+            await OnFlipDone.InvokeAsync();
             StateHasChanged(); // Refresh UI   
         }
     }
