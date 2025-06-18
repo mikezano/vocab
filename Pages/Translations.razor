@@ -1,0 +1,14 @@
+﻿@page "/translations"
+@using Vocab.Components
+@using Vocab.State
+@inject AppState AppState
+
+
+@if (AppState.SheetId != null)
+{
+    <Cards />
+}
+
+@code {
+
+}

@@ -1,6 +1,7 @@
 ﻿@using Vocab.State
 @inject IJSRuntime JS
 @inject AppState AppState
+@inject NavigationManager NavigationManager
 
 <div class="d-flex align-items-center flex-column">
     <div class="card" style="min-width:24rem; max-width:30rem;">
@@ -33,14 +34,16 @@
         if(prev != null)
         {
             SheetId = prev;
+            NavigationManager.NavigateTo("/translations");
         }
 
     }
 
-    public void GetGoogleSheetId()
+    public async Task GetGoogleSheetId()
     {
-        JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id", SheetId);
-        JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id-prev", SheetId);
-        AppState.SetSheetId(SheetId);
+        await JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id", SheetId);
+        await JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id-prev", SheetId);
+        await AppState.SetSheetId(SheetId);
+        NavigationManager.NavigateTo("/translations");
     }
 }

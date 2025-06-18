@@ -1,6 +1,7 @@
 ﻿@using Vocab.State
 @using Vocab.Models
 @inject AppState AppState
+@inject IJSRuntime JS
 
 
 <div class="d-flex flex-wrap justify-content-center">
@@ -16,17 +17,16 @@
 @code {
     private List<TranslationMultipleChoices> Choices { get; set; } = new();
     private int _selectedCardIndex = -1;
+    private int _visibleCardsCount = 0;
     private TranslationMultipleChoices? NextTranslation { get; set; }
+    public int VisibleCardCount { get; set; } = 0;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        LoadTranslations();
+        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
+        VisibleCardCount = dimensions.GetVisibleCardCount();
+        Choices = AppState.GetMultipleChoiceSets(VisibleCardCount);
     }   
-
-    private void LoadTranslations()
-    {
-        Choices = AppState.GetMultipleChoiceSets(4);
-    }
 
     private void HandleGuess((Answer answer, int cardId) args)
     {

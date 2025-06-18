@@ -1,0 +1,42 @@
+﻿@using Vocab.State
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+<header class="top-row px-4">
+    <nav>
+        <button class="navigation btn btn-sm btn-default m-1" @onclick="Home" title="Home.">
+            <i class="oi oi-home"></i> Home
+        </button>
+        <button class="navigation btn btn-sm btn-default m-1" @onclick="Flip" title="Flip translations.">
+            <i class="oi oi-loop"></i> Flip
+        </button>
+        <Stats />
+    </nav>
+</header>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        AppState.OnSetSheetId += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnSetSheetId -= StateHasChanged;
+    }
+
+    public void Home()
+    {
+        AppState.Reset();
+        NavigationManager.NavigateTo("/");
+
+    }
+
+    public void Flip()
+    {
+        AppState.Flip();
+        AppState.ReSetGuesses();
+    }
+}

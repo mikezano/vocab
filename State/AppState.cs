@@ -172,6 +172,7 @@ namespace Vocab.State
         {
             await _js.InvokeVoidAsync("Web.clearStorageItem", "translations");
             await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");
+            await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id-prev");
             Translations = new List<TranslationItem>();
             SheetId = null;
             NotifyStateChanged();
