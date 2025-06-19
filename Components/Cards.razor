@@ -32,7 +32,8 @@
     {
         if(args.answer.IsCorrect)
         {
-            int index = AppState.Translations.FindIndex(i => i.Word == args.answer.Translation);
+            int index = AppState.Translations.FindIndex(i => i.Word == args.answer.Word);
+
             AppState.UpdateCorrectGuess(index);
         }
         else

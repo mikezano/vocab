@@ -84,6 +84,7 @@ namespace Vocab.State
 
         public void UpdateCorrectGuess(int index)
         {
+            Console.WriteLine($"Updating correct guess for index: {index}, {Translations[index]}");
             Translations[index].IsGuessed = true;
             _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();

@@ -84,7 +84,7 @@ namespace Vocab.Components
         [JSInvokable]
         public async void OnAnimationCorrectnessEnd()
         {
-            IsCorrect = null;
+
             await OnSelect.InvokeAsync(
                 (
                     new Answer
@@ -98,8 +98,11 @@ namespace Vocab.Components
             );
             await SetupNextAnimation(nameof(OnAnimationConcealEnd));
             await JS.InvokeVoidAsync("Web.clearRadioButtons");
+            
             AnimationClasses["card-conceal"] = true;
-            StateHasChanged(); // Refresh UI       
+            StateHasChanged(); // Refresh UI
+                               // 
+            IsCorrect = null;
         }
 
         [JSInvokable]

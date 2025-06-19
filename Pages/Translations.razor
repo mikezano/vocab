@@ -2,6 +2,7 @@
 @using Vocab.Components
 @using Vocab.State
 @inject AppState AppState
+@inject NavigationManager NavigationManager
 
 
 @if (AppState.SheetId != null)
@@ -10,5 +11,11 @@
 }
 
 @code {
-
+    protected override void OnInitialized()
+    {
+       if(AppState.SheetId == null)
+       {
+           NavigationManager.NavigateTo("/");
+       }
+    }
 }
