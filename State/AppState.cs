@@ -134,28 +134,6 @@ namespace Vocab.State
             };
         }
 
-        //public void GetNext()
-        //{
-        //    var notGuessed = Translations.Where(w => !w.IsGuessed).ToList();
-        //    var notOnScreen = notGuessed.Where(w => MultipleChoiceSets.FindIndex(fi => fi.Translation == w.From) == -1).ToList();
-        //    if (notOnScreen.Count == 0 && !answer.IsCorrect)
-        //    {
-        //        notOnScreen.Add(AppState.Translations[indexOfWord]);
-        //    }
-
-        //    int nextIndex = random.Next(notOnScreen.Count);
-        //    TranslationItem nextWord = new TranslationItem();
-        //    if (notOnScreen.Count > 0)
-        //    {
-        //        nextWord = notOnScreen[nextIndex];
-        //        MultipleChoiceSets[answer.ReplacementIndex] = AppState.CreateCardMultipleChoices(nextWord, 2);
-        //    }
-        //    else
-        //    {
-        //        MultipleChoiceSets[answer.ReplacementIndex] = new TranslationMultipleChoices { Answer = "----", Choices = null, Translation = "----" };
-        //    }
-        //}
-
         public void ReSetGuesses()
         {
             Translations.ForEach(fe => { fe.IsGuessed = false; });

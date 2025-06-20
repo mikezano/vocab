@@ -5,22 +5,27 @@
 
 @if (AppState.Translations != null)
 {
-<div class="d-flex flex-column stats mr-2">
-    <div title="Correct Responses">
-        <span class="oi oi-check text-success"></span>
-        <span>:</span>
-        <span>@AppState.GuessedCorrectlyCount</span>
-        <span>/</span>
-        <span>@AppState.Translations.Count</span>
+    <div class="fs-5 d-flex flex-column">
+        <div class="d-flex align-items-center gap-1" title="Correct Responses">
+            
+            <ion-icon name="checkmark-circle" class="text-success"/>
 
+            <span>@AppState.GuessedCorrectlyCount</span>
+            <span>/</span>
+            <span>@AppState.Translations.Count</span>
+
+        </div>
+        <div class="d-flex align-items-center gap-1" title="Incorrect Responses">
+            
+            <ion-icon name="close-circle" class="text-danger" />
+            <span>@AppState.IncorrectGuesses</span>
+        </div>
+        <div class="d-flex align-items-center gap-1 border-top border-black" title="Total Responses">
+
+            <ion-icon name="" />
+            <span>@AppState.Translations.Count</span>
+        </div>
     </div>
-    <div class="text-right">
-        <span class="oi oi-circle-x text-danger"></span>
-        <span>@AppState.IncorrectGuesses</span>
-    </div>
-</div>
-
-
 }
 
 

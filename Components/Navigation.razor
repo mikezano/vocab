@@ -2,15 +2,22 @@
 @inject AppState AppState
 @inject NavigationManager NavigationManager
 
-<header class="top-row px-4">
-    <nav>
-        <button class="navigation btn btn-sm btn-default m-1" @onclick="Home" title="Home.">
-            <i class="oi oi-home"></i> Home
-        </button>
-        <button class="navigation btn btn-sm btn-default m-1" @onclick="Flip" title="Flip translations.">
-            <i class="oi oi-loop"></i> Flip
-        </button>
-        <Stats />
+<header>
+    <nav class="d-flex align-items-center px-2 m-0 bg-opacity-10 bg-secondary">
+        @if (AppState.SheetId != null)
+        {
+            <button class="fs-2 navigation btn btn-sm btn-default m-1" @onclick="Home" title="Home.">
+                <ion-icon name="Home" />
+            </button>
+            <button class="fs-2 navigation btn btn-sm btn-default m-1" @onclick="Flip" title="Flip translations.">
+                <i class="oi oi-loop"></i> Flip
+            </button>
+        }
+
+        <h1 class="display-2 text-primary mx-auto">Vocab</h1>
+       @if(AppState.SheetId != null){
+            <Stats />
+       }
     </nav>
 </header>
 
