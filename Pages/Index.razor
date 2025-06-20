@@ -20,7 +20,6 @@ else
     private bool _isInitialized = true;
     protected override async Task OnInitializedAsync()
     {
-        //AppState.OnSetSheetId += HandleSetSheetId;
         await AppState.InitializeAsync();
         _isInitialized = true;
 

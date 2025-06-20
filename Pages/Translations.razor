@@ -7,15 +7,21 @@
 
 @if (AppState.SheetId != null)
 {
-    <Cards />
+    <Cards OnAllCardsGuessed="HandleAllCardsGuessed"/>
 }
 
 @code {
     protected override void OnInitialized()
     {
-       if(AppState.SheetId == null)
-       {
-           NavigationManager.NavigateTo("/");
-       }
+        if(AppState.SheetId == null)
+        {
+            NavigationManager.NavigateTo("/");
+        }
     }
+
+    public async Task HandleAllCardsGuessed()
+    {
+        await AppState.ReSetGuesses();
+    }
+
 }

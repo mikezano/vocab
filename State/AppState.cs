@@ -90,17 +90,17 @@ namespace Vocab.State
 
         public int GuessedCorrectlyCount => Translations.Count(c => c.IsGuessed);
 
-        public void UpdateCorrectGuess(int index)
+        public async Task UpdateCorrectGuess(int index)
         {
             Console.WriteLine("update guess");
             Translations[index].IsGuessed = true;
-            _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
         }
-        public void UpdateIncorrectGuesses()
+        public async Task UpdateIncorrectGuesses()
         {
             IncorrectGuesses++;
-            _js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", IncorrectGuesses);
+            await _js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", IncorrectGuesses);
             NotifyStateChanged();
         }
 
@@ -110,7 +110,7 @@ namespace Vocab.State
             var cardDataSet = Translations
                 .Where(w => !w.IsGuessed)
                 .OrderBy(x => random.Next())
-                .Take(count > Translations.Count ? Translations.Count : count)
+                .Take(count >= Translations.Count ? Translations.Count : count)
                 .ToList()
                 .Select(s => { return CreateCardMultipleChoices(s, 2); })
                 .ToList();
@@ -121,8 +121,20 @@ namespace Vocab.State
 
         public TranslationMultipleChoices? GetNextMultipleChoiceSet(int minimumVisible)
         {
+            //This might be running before the isGuessed is properfly finished settings
             var remaining = Translations.Where(w => !w.IsGuessed).ToList();
-            if(remaining.Count < minimumVisible)
+            Console.WriteLine($"Remaining: {remaining.Count}, Visible: {minimumVisible}");
+            Console.WriteLine($" {remaining.First().Word}");
+
+            //This is replacing the 2nd to last one with the same as the final
+            //need to still 
+            // maybe  will need to check how many true
+            //if (remaining.Count == 1)
+            //{
+            //    return CreateCardMultipleChoices(remaining.First(), 2);
+            //}
+
+            if (remaining.Count < minimumVisible)
             {
                 return null;
             }
@@ -152,11 +164,11 @@ namespace Vocab.State
             };
         }
 
-        public void ReSetGuesses()
+        public async Task ReSetGuesses()
         {
             Console.WriteLine("resetguesses");
             Translations.ForEach(fe => { fe.IsGuessed = false; });
-            _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
+            await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyReStart();
             IncorrectGuesses = 0;
         }
@@ -168,9 +180,7 @@ namespace Vocab.State
 
         public async Task Reset()
         {
-            await _js.InvokeVoidAsync("Web.clearStorageItem", "translations");
-            await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");
-            await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id-prev");
+            await _js.InvokeVoidAsync("Web.clearStorage");
             Translations = new List<TranslationItem>();
             SheetId = null;
             NotifyStateChanged();

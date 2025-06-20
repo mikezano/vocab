@@ -4,9 +4,7 @@
 @inject IJSRuntime JS
 
 
-<div class="d-flex">
-    {@AppState.Translations.Count()}
-</div>
+
 <div class="d-flex flex-wrap justify-content-center">
     @if (AppState.Translations.Any())
     {
@@ -16,68 +14,3 @@
         }
     }
 </div>
-
-@code {
-    private List<TranslationMultipleChoices> Choices { get; set; } = new();
-    private int _selectedCardIndex = -1;
-    private int _visibleCardsCount = 0;
-    private TranslationMultipleChoices? NextTranslation { get; set; }
-    public int VisibleCardCount { get; set; } = 0;
-
-
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
-        VisibleCardCount = dimensions.GetVisibleCardCount();
-        AppState.OnTranslationsLoaded += CreateMultipleChoices;
-        if (AppState.Translations.Any())
-        {
-            CreateMultipleChoices();
-        }
-    }   
-
-    public void Dispose()
-    {
-        AppState.OnTranslationsLoaded -= CreateMultipleChoices;
-    }
-
-    public void CreateMultipleChoices()
-    {
-        Choices = AppState.GetMultipleChoiceSets(VisibleCardCount);
-        StateHasChanged();
-    }
-
-    private void HandleGuess((Answer answer, int cardId) args)
-    {
-        if(args.answer.IsCorrect)
-        {
-            int index = AppState.Translations.FindIndex(i => i.Word == args.answer.Word);
-            AppState.UpdateCorrectGuess(index);
-        }
-        else
-        {
-            AppState.UpdateIncorrectGuesses();
-        };
-
-        _selectedCardIndex = args.cardId;
-        NextTranslation = AppState.GetNextMultipleChoiceSet(VisibleCardCount);
-
-        if (NextTranslation != null)
-        {
-            Choices[_selectedCardIndex] = NextTranslation;
-        }
-        else
-        {
-            Choices.RemoveAt(_selectedCardIndex);
-        }
-    }
-
-    public void HandleFlipDone()
-    {
-        //Choices[_selectedCardIndex].Answer = NextTranslation?.Answer ?? string.Empty;
-        //Choices[_selectedCardIndex].Answer = "Yo";
-        StateHasChanged();
-    }
-}
