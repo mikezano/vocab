@@ -56,7 +56,6 @@ namespace Vocab.Api
                 };
 
             }).ToList();
-            Console.WriteLine(JsonConvert.SerializeObject(translations, Formatting.Indented));
             return translations;
         }
     }

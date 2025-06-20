@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using Vocab.Api;
 using Vocab.Models;
+using Vocab.Pages;
 
 namespace Vocab.State
 {
@@ -14,7 +15,6 @@ namespace Vocab.State
 
         public AppState(GoogleSheet googleSheet, IJSRuntime jsRuntime)
         {
-            Console.WriteLine("AppState constructor called");
             _googleSheet = googleSheet ?? throw new ArgumentNullException(nameof(googleSheet));
             _js = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
         }
@@ -42,13 +42,19 @@ namespace Vocab.State
         {
             try
             {
+                Console.WriteLine("initialize");
                 var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
-                Console.WriteLine($"Stored Sheet ID: {storedSheetId}");
+                var storageTranslations = await _js.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
+
                 if (!string.IsNullOrEmpty(storedSheetId))
                 {
-                    await SetSheetId(storedSheetId);
+                    await SetSheetId(storedSheetId); //This also gets translations
                 }
-
+                if (storageTranslations != null)
+                {
+                    Translations = storageTranslations;
+                    NotifyTranslationsLoaded();     
+                }
             }
             catch(Exception ex)
             {
@@ -59,8 +65,10 @@ namespace Vocab.State
         public async Task SetSheetId(string sheetId)
         {
             SheetId = sheetId;
+            Console.WriteLine("set sheet id");
+            Translations = await _googleSheet.GetEntries(SheetId!);
+            await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifySheetIdChanged();
-            Translations = await _googleSheet.GetEntries(SheetId);
             NotifyTranslationsLoaded();
         }
 
@@ -84,7 +92,7 @@ namespace Vocab.State
 
         public void UpdateCorrectGuess(int index)
         {
-            Console.WriteLine($"Updating correct guess for index: {index}, {Translations[index]}");
+            Console.WriteLine("update guess");
             Translations[index].IsGuessed = true;
             _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
@@ -109,6 +117,16 @@ namespace Vocab.State
 
             NotifyStateChanged();
             return cardDataSet;
+        }
+
+        public TranslationMultipleChoices? GetNextMultipleChoiceSet(int minimumVisible)
+        {
+            var remaining = Translations.Where(w => !w.IsGuessed).ToList();
+            if(remaining.Count < minimumVisible)
+            {
+                return null;
+            }
+            return GetMultipleChoiceSets(1).FirstOrDefault();
         }
 
         public TranslationMultipleChoices CreateCardMultipleChoices(TranslationItem item, int wrongAnswerCount)
@@ -136,6 +154,7 @@ namespace Vocab.State
 
         public void ReSetGuesses()
         {
+            Console.WriteLine("resetguesses");
             Translations.ForEach(fe => { fe.IsGuessed = false; });
             _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyReStart();
@@ -147,7 +166,7 @@ namespace Vocab.State
             NotifyReStart();
         }
 
-        public async void Reset()
+        public async Task Reset()
         {
             await _js.InvokeVoidAsync("Web.clearStorageItem", "translations");
             await _js.InvokeVoidAsync("Web.clearStorageItem", "sheet-id");

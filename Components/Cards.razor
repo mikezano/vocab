@@ -5,7 +5,7 @@
 
 
 <div class="d-flex">
-
+    {@AppState.Translations.Count()}
 </div>
 <div class="d-flex flex-wrap justify-content-center">
     @if (AppState.Translations.Any())
@@ -24,19 +24,36 @@
     private TranslationMultipleChoices? NextTranslation { get; set; }
     public int VisibleCardCount { get; set; } = 0;
 
+
+
     protected override async Task OnInitializedAsync()
     {
+
         var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
         VisibleCardCount = dimensions.GetVisibleCardCount();
-        Choices = AppState.GetMultipleChoiceSets(VisibleCardCount);
+        AppState.OnTranslationsLoaded += CreateMultipleChoices;
+        if (AppState.Translations.Any())
+        {
+            CreateMultipleChoices();
+        }
     }   
+
+    public void Dispose()
+    {
+        AppState.OnTranslationsLoaded -= CreateMultipleChoices;
+    }
+
+    public void CreateMultipleChoices()
+    {
+        Choices = AppState.GetMultipleChoiceSets(VisibleCardCount);
+        StateHasChanged();
+    }
 
     private void HandleGuess((Answer answer, int cardId) args)
     {
         if(args.answer.IsCorrect)
         {
             int index = AppState.Translations.FindIndex(i => i.Word == args.answer.Word);
-
             AppState.UpdateCorrectGuess(index);
         }
         else
@@ -45,12 +62,11 @@
         };
 
         _selectedCardIndex = args.cardId;
-        NextTranslation = AppState.GetMultipleChoiceSets(1).FirstOrDefault();
+        NextTranslation = AppState.GetNextMultipleChoiceSet(VisibleCardCount);
 
         if (NextTranslation != null)
         {
             Choices[_selectedCardIndex] = NextTranslation;
-
         }
         else
         {

@@ -34,9 +34,9 @@
         AppState.OnSetSheetId -= StateHasChanged;
     }
 
-    public void Home()
+    public async Task Home()
     {
-        AppState.Reset();
+        await AppState.Reset();
         NavigationManager.NavigateTo("/");
 
     }

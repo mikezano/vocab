@@ -71,7 +71,6 @@ namespace Vocab.Components
         {
             if(!IsCorrect.HasValue)
             {
-                Console.WriteLine("Animation Reveal Ended without correctness!");
                 return;
             }
 
@@ -101,8 +100,7 @@ namespace Vocab.Components
             
             AnimationClasses["card-conceal"] = true;
             StateHasChanged(); // Refresh UI
-                               // 
-            IsCorrect = null;
+
         }
 
         [JSInvokable]
