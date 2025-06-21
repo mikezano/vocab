@@ -6,15 +6,15 @@
     <nav class="d-flex align-items-center px-2 m-0 bg-opacity-10 bg-secondary">
         @if (AppState.SheetId != null)
         {
-            <button class="fs-2 navigation btn btn-sm btn-default m-1" @onclick="Home" title="Home.">
-                <ion-icon name="Home" />
+            <button class="fs-3 navigation btn btn-sm btn-outline-secondary border-0" @onclick="Home" title="Home">
+                <ion-icon name="Home" style="padding-top:0.5rem"/>
             </button>
-            <button class="fs-2 navigation btn btn-sm btn-default m-1" @onclick="Flip" title="Flip translations.">
-                <i class="oi oi-loop"></i> Flip
+            <button class="fs-3 navigation btn btn-sm btn-outline-secondary border-0" @onclick="Flip" title="Re-start">
+                <ion-icon name="sync" style="padding-top:0.5rem" />
             </button>
         }
 
-        <h1 class="display-2 text-primary mx-auto">Vocab</h1>
+        <h1 class="display-2 text-primary mx-auto my-0">Vocab</h1>
        @if(AppState.SheetId != null){
             <Stats />
        }
@@ -41,10 +41,9 @@
 
     }
 
-    public void Flip()
+    public async Task Flip()
     {
-        AppState.Flip();
-        AppState.ReSetGuesses();
-        StateHasChanged();
+       await AppState.ReSetGuesses();
+       StateHasChanged();
     }
 }

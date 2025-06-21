@@ -45,6 +45,7 @@ namespace Vocab.State
                 Console.WriteLine("initialize");
                 var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
                 var storageTranslations = await _js.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
+                var incorrectGuesses = await _js.InvokeAsync<int>("Web.getStorageItem", "incorrectGuesses");
 
                 if (!string.IsNullOrEmpty(storedSheetId))
                 {
@@ -53,6 +54,7 @@ namespace Vocab.State
                 if (storageTranslations != null)
                 {
                     Translations = storageTranslations;
+                    IncorrectGuesses = incorrectGuesses; 
                     NotifyTranslationsLoaded();     
                 }
             }
@@ -124,7 +126,7 @@ namespace Vocab.State
             //This might be running before the isGuessed is properfly finished settings
             var remaining = Translations.Where(w => !w.IsGuessed).ToList();
             Console.WriteLine($"Remaining: {remaining.Count}, Visible: {minimumVisible}");
-            Console.WriteLine($" {remaining.First().Word}");
+
 
             //This is replacing the 2nd to last one with the same as the final
             //need to still 
@@ -169,8 +171,10 @@ namespace Vocab.State
             Console.WriteLine("resetguesses");
             Translations.ForEach(fe => { fe.IsGuessed = false; });
             await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
-            NotifyReStart();
+            await _js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", "0");
             IncorrectGuesses = 0;
+            NotifyReStart();
+        
         }
 
         public void Shuffle()
