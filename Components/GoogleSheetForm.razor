@@ -30,7 +30,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var prev = await JS.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
+        var prev = await JS.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id");
         if(prev != null)
         {
             SheetId = prev;
@@ -42,7 +42,6 @@
     public async Task GetGoogleSheetId()
     {
         await JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id", SheetId);
-        await JS.InvokeVoidAsync("Web.saveToStorage", "sheet-id-prev", SheetId);
         await AppState.SetSheetId(SheetId);
         NavigationManager.NavigateTo("/translations");
     }

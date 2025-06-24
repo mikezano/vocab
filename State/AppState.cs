@@ -42,8 +42,7 @@ namespace Vocab.State
         {
             try
             {
-                Console.WriteLine("initialize");
-                var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id-prev");
+                var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id");
                 var storageTranslations = await _js.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
                 var incorrectGuesses = await _js.InvokeAsync<int>("Web.getStorageItem", "incorrectGuesses");
 
@@ -187,6 +186,7 @@ namespace Vocab.State
             await _js.InvokeVoidAsync("Web.clearStorage");
             Translations = new List<TranslationItem>();
             SheetId = null;
+            IncorrectGuesses = 0;
             NotifyStateChanged();
             NotifySheetIdChanged();
         }
