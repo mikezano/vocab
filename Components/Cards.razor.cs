@@ -65,7 +65,13 @@ namespace Vocab.Components
             //It should give me back the same if 1 is left and it is wrong
             //Should truly be null if the last one is correct and nothing left
             //The query for guessed should still return 1
-            var nextTranslation = AppState.GetNextMultipleChoiceSet(VisibleCardCount);
+           
+            var displayedWords = Choices
+                .Where(i => i.Word != args.answer.Word)
+                .Select(i => i.Word)
+                .ToList();
+            Console.WriteLine($"Word: {args.answer.Word} , [{string.Join(", ", displayedWords)}] ");
+            var nextTranslation = AppState.GetNextMultipleChoiceSet(VisibleCardCount, displayedWords);
 
             Console.WriteLine($"Next translation {nextTranslation?.Word}");
             if (nextTranslation != null)

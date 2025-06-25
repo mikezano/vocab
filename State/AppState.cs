@@ -44,7 +44,7 @@ namespace Vocab.State
             {
                 var storedSheetId = await _js.InvokeAsync<string>("Web.getStorageItemAsString", "sheet-id");
                 var storageTranslations = await _js.InvokeAsync<List<TranslationItem>>("Web.getStorageItem", "translations");
-                var incorrectGuesses = await _js.InvokeAsync<int>("Web.getStorageItem", "incorrectGuesses");
+                var incorrectGuesses = await _js.InvokeAsync<string>("Web.getStorageItem", "incorrectGuesses");
 
                 if (!string.IsNullOrEmpty(storedSheetId))
                 {
@@ -53,13 +53,13 @@ namespace Vocab.State
                 if (storageTranslations != null)
                 {
                     Translations = storageTranslations;
-                    IncorrectGuesses = incorrectGuesses; 
+                    IncorrectGuesses = int.TryParse(incorrectGuesses, out int result) ? result : 0; 
                     NotifyTranslationsLoaded();     
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Error initializing AppState: {ex.Message}");
+                Console.WriteLine($"Error initializing AppState: {ex.Message} {ex.InnerException}");
             }   
         }
 
@@ -105,26 +105,40 @@ namespace Vocab.State
             NotifyStateChanged();
         }
 
-        public List<TranslationMultipleChoices> GetMultipleChoiceSets(int count)
+        public List<TranslationMultipleChoices> GetMultipleChoiceSets(int count, List<string>? excludedWords = null)
         {
             Random random = new Random();
-            var cardDataSet = Translations
-                .Where(w => !w.IsGuessed)
+            var query = Translations.Where(w => !w.IsGuessed);
+            Console.WriteLine($"Remaining translations:  [{string.Join(", ", query.Select(q=>q.Word).ToList())} ");
+
+            if (excludedWords != null && excludedWords.Count > 0)
+            {
+                query.Where(w => !excludedWords.Contains(w.Word));
+                Console.WriteLine($"Excluded words:  [{string.Join(", ", excludedWords)}] ");
+            }
+
+            var test = query.ToList();
+            Console.WriteLine($"cardDataSet: {test[0].Word}");
+
+            var cardDataSet = query
                 .OrderBy(x => random.Next())
                 .Take(count >= Translations.Count ? Translations.Count : count)
                 .ToList()
                 .Select(s => { return CreateCardMultipleChoices(s, 2); })
                 .ToList();
 
+            Console.WriteLine($"cardDataSet: {cardDataSet[0].Word}");
+
             NotifyStateChanged();
             return cardDataSet;
         }
 
-        public TranslationMultipleChoices? GetNextMultipleChoiceSet(int minimumVisible)
+        public TranslationMultipleChoices? GetNextMultipleChoiceSet(int minimumVisible, List<string> displayedWords)
         {
             //This might be running before the isGuessed is properfly finished settings
-            var remaining = Translations.Where(w => !w.IsGuessed).ToList();
-            Console.WriteLine($"Remaining: {remaining.Count}, Visible: {minimumVisible}");
+            //remaining shouldn't include already displayed values
+            //var remaining = Translations.Where(w => !w.IsGuessed).ToList();
+            //Console.WriteLine($"Remaining: {remaining.Count}, Visible: {minimumVisible}");
 
 
             //This is replacing the 2nd to last one with the same as the final
@@ -135,11 +149,11 @@ namespace Vocab.State
             //    return CreateCardMultipleChoices(remaining.First(), 2);
             //}
 
-            if (remaining.Count < minimumVisible)
-            {
-                return null;
-            }
-            return GetMultipleChoiceSets(1).FirstOrDefault();
+            //if (remaining.Count < minimumVisible)
+            //{
+            //    return null;
+            //}
+            return GetMultipleChoiceSets(1, displayedWords).FirstOrDefault();
         }
 
         public TranslationMultipleChoices CreateCardMultipleChoices(TranslationItem item, int wrongAnswerCount)
