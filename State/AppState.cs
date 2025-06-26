@@ -109,16 +109,12 @@ namespace Vocab.State
         {
             Random random = new Random();
             var query = Translations.Where(w => !w.IsGuessed);
-            Console.WriteLine($"Remaining translations:  [{string.Join(", ", query.Select(q=>q.Word).ToList())} ");
 
             if (excludedWords != null && excludedWords.Count > 0)
             {
-                query.Where(w => !excludedWords.Contains(w.Word));
-                Console.WriteLine($"Excluded words:  [{string.Join(", ", excludedWords)}] ");
+                //Important! : to make the query additive you need to set it back to itself
+                query = query.Where(w => !excludedWords.Contains(w.Word)); 
             }
-
-            var test = query.ToList();
-            Console.WriteLine($"cardDataSet: {test[0].Word}");
 
             var cardDataSet = query
                 .OrderBy(x => random.Next())
@@ -126,8 +122,6 @@ namespace Vocab.State
                 .ToList()
                 .Select(s => { return CreateCardMultipleChoices(s, 2); })
                 .ToList();
-
-            Console.WriteLine($"cardDataSet: {cardDataSet[0].Word}");
 
             NotifyStateChanged();
             return cardDataSet;
