@@ -28,7 +28,7 @@ namespace Vocab.Api
             entries = entries.Substring(47);
             entries = entries.Remove(entries.Length - 2);
             var translations = FormatWords(entries);
-            return translations.Take(6).ToList();
+            return translations.Skip(1).ToList();
         }
 
         public List<TranslationItem> FormatWords(object json)

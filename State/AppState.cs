@@ -92,7 +92,6 @@ namespace Vocab.State
 
         public async Task UpdateCorrectGuess(int index)
         {
-            Console.WriteLine("update guess");
             Translations[index].IsGuessed = true;
             await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifyStateChanged();
@@ -174,7 +173,6 @@ namespace Vocab.State
 
         public async Task ReSetGuesses()
         {
-            Console.WriteLine("resetguesses");
             Translations.ForEach(fe => { fe.IsGuessed = false; });
             await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             await _js.InvokeVoidAsync("Web.saveToStorage", "incorrectGuesses", "0");
