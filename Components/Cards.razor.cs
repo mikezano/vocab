@@ -18,7 +18,6 @@ namespace Vocab.Components
 
             var dimensions = await JS.InvokeAsync<BrowserDimensions>("Web.getDimensions");
             VisibleCardCount = dimensions.GetVisibleCardCount();
-            Console.WriteLine($"Start visible count {VisibleCardCount}");
             AppState.OnTranslationsLoaded += CreateMultipleChoices;
             AppState.OnReStart += CreateMultipleChoices;
             if (AppState.Translations.Any())
@@ -70,21 +69,17 @@ namespace Vocab.Components
                 .Where(i => i.Word != args.answer.Word)
                 .Select(i => i.Word)
                 .ToList();
-            Console.WriteLine($"Word: {args.answer.Word} , [{string.Join(", ", displayedWords)}] ");
             var nextTranslation = AppState.GetNextMultipleChoiceSet(VisibleCardCount, displayedWords);
 
-            Console.WriteLine($"Next translation {nextTranslation?.Word}");
             if (nextTranslation != null)
             {
                 Choices[_selectedCardIndex] = nextTranslation;
             }
             else
             {
-                Console.WriteLine($"in the else {_selectedCardIndex}");
                 Choices.RemoveAt(_selectedCardIndex);
             }
 
-            Console.WriteLine($"How many left {Choices.Count}");
             if (Choices.Count == 0)
             {
                 await OnAllCardsGuessed.InvokeAsync();
@@ -94,8 +89,6 @@ namespace Vocab.Components
 
         public void HandleFlipDone()
         {
-            //Choices[_selectedCardIndex].Answer = NextTranslation?.Answer ?? string.Empty;
-            //Choices[_selectedCardIndex].Answer = "Yo";
             StateHasChanged();
         }
     }

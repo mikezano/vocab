@@ -66,7 +66,6 @@ namespace Vocab.State
         public async Task SetSheetId(string sheetId)
         {
             SheetId = sheetId;
-            Console.WriteLine("set sheet id");
             Translations = await _googleSheet.GetEntries(SheetId!);
             await _js.InvokeVoidAsync("Web.saveToStorage", "translations", JsonConvert.SerializeObject(Translations));
             NotifySheetIdChanged();
