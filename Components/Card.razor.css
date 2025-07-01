@@ -47,6 +47,7 @@
 }
 .card-body .choice:hover{
     background-color:hsla(0, 0%, 0%, 0.1);
+    cursor:pointer;
 }
 
 .card.card-reveal .card-body {
