@@ -1,0 +1,14 @@
+﻿@using Vocab.Components
+@using Vocab.State
+@inherits LayoutComponentBase
+@inject AppState AppState
+
+<Navigation />
+<div class="page">
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+

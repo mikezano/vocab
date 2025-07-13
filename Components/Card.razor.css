@@ -1,0 +1,109 @@
+﻿﻿.card {
+    width: 16rem;
+    height: 11rem;
+    perspective: 500px;
+    background-color:transparent;
+}
+
+.card-body, .card-body .front, .card-body .back {
+    width:inherit;
+    height:inherit;
+}
+
+.card-body {
+    position: relative;
+    display: grid;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    background-color:white;
+
+    transform-style: preserve-3d;
+}
+
+.card-body .front, .card-body .back {
+    grid-area: 1/1;
+    backface-visibility: hidden;
+}
+
+/* rgba(8, 146, 208, 0.5) 1.9rem, */
+    .card-body .front {
+        border: .1rem solid white;
+        background: linear-gradient( to bottom, transparent 1.8rem, #0892d0 1.9rem, transparent 2rem );
+        background-size: 100% 2rem;
+        background-position: 0 .3rem;
+    }
+    .card-body .front .word {
+        background-color:white;
+        text-align: center;
+        border-width: .2rem !important;
+    }
+
+.card-body .back{
+    transform: rotateY(180deg);
+}
+
+.card-body .choice{
+    font-size:1.6rem;
+    height:2rem;
+}
+.card-body .choice:hover{
+    background-color:hsla(0, 0%, 0%, 0.1);
+    cursor:pointer;
+}
+
+.card.card-reveal .card-body {
+    animation: reveal 1s ease-in forwards;
+}
+
+.card.card-correct .card-body {
+    transform: rotateY(180deg);
+    animation: answer-correct .5s ease-in forwards;
+}
+.card.card-incorrect .card-body {
+   transform: rotateY(180deg);
+   animation: answer-wrong .5s ease-in forwards;
+}
+
+.card.card-conceal .card-body {
+    animation: conceal 1s ease-in forwards;
+}
+
+.card.card-conceal .card-body .back{
+    display:none !important; /* bottstrap .d-flex is overriding*/
+}
+
+@keyframes reveal {
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes answer-correct {
+    0% { border: .1rem solid transparent; }
+    50%{ 
+        box-shadow: 0 0 0.5rem green;
+        border: 0.1rem solid green;
+
+    }
+    20%, 80%{
+        transform: rotateY(180deg) translateY(0); 
+    }
+    40%, 60%{
+        transform: rotateY(180deg) translateY(-.3rem);
+    }
+}
+
+@keyframes answer-wrong {
+    0% {border: .1rem solid transparent;}
+    29% { transform: rotateY(180deg) translateX(0); }
+    30% { transform: rotateY(180deg) translateX(-.3rem); }
+    35% { transform: rotateY(180deg) translateX(.3rem); }
+    40% { transform: rotateY(180deg) translateX(-.2rem); }
+    45% { transform: rotateY(180deg) translateX(.2rem); }
+    50% { transform: rotateY(180deg) translateX(-.1rem); }
+    55% { transform: rotateY(180deg) translateX(.1rem);}
+    60% { border: .1rem solid red; }
+}
+
+@keyframes conceal {
+    100% { transform: rotateY(360deg);}
+}

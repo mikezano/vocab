@@ -1,0 +1,16 @@
+﻿@using Vocab.State
+@using Vocab.Models
+@inject AppState AppState
+@inject IJSRuntime JS
+
+
+
+<div class="d-flex flex-wrap justify-content-center">
+    @if (AppState.Translations.Any())
+    {
+        @foreach (var (choice, index) in Choices.Select((value, i) => (value, i)))
+        {
+            <Card MultipleChoices="@choice" Id="@index" OnSelect="HandleGuess" OnFlipDone="HandleFlipDone" />
+        }
+    }
+</div>

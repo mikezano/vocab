@@ -1,0 +1,49 @@
+﻿@using Vocab.State
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+<header>
+    <nav class="d-flex align-items-center px-2 m-0 bg-opacity-10 bg-secondary">
+        @if (AppState.SheetId != null)
+        {
+            <button class="fs-3 navigation btn btn-sm btn-outline-secondary border-0" @onclick="Home" title="Home">
+                <ion-icon name="Home" style="padding-top:0.5rem"/>
+            </button>
+            <button class="fs-3 navigation btn btn-sm btn-outline-secondary border-0" @onclick="Flip" title="Re-start">
+                <ion-icon name="sync" style="padding-top:0.5rem" />
+            </button>
+        }
+
+        <h1 class="display-2 text-primary mx-auto my-0">Vocab</h1>
+       @if(AppState.SheetId != null){
+            <Stats />
+       }
+    </nav>
+</header>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        AppState.OnSetSheetId += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnSetSheetId -= StateHasChanged;
+    }
+
+    public async Task Home()
+    {
+        await AppState.Reset();
+        NavigationManager.NavigateTo("/");
+
+    }
+
+    public async Task Flip()
+    {
+       await AppState.ReSetGuesses();
+       StateHasChanged();
+    }
+}

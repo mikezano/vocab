@@ -1,0 +1,42 @@
+﻿@inject AppState AppState
+@using Vocab.State
+
+@implements IDisposable
+
+@if (AppState.Translations != null)
+{
+    <div class="fs-5 d-flex flex-column">
+        <div class="d-flex align-items-center gap-1" title="Correct Responses">
+            
+            <ion-icon name="checkmark-circle" class="text-success"/>
+
+            <span>@AppState.GuessedCorrectlyCount</span>
+            <span>/</span>
+            <span>@AppState.Translations.Count</span>
+
+        </div>
+        <div class="d-flex align-items-center gap-1" title="Incorrect Responses">
+            
+            <ion-icon name="close-circle" class="text-danger" />
+            <span>@AppState.IncorrectGuesses</span>
+        </div>
+        @* <div class="d-flex align-items-center gap-1 border-top border-black" title="Total Responses">
+
+            <ion-icon name="" />
+            <span>@AppState.Translations.Count</span>
+        </div> *@
+    </div>
+}
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        AppState.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        AppState.OnChange -= StateHasChanged;
+    }
+}

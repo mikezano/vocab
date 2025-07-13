@@ -1,0 +1,27 @@
+﻿@page "/translations"
+@using Vocab.Components
+@using Vocab.State
+@inject AppState AppState
+@inject NavigationManager NavigationManager
+
+
+@if (AppState.SheetId != null)
+{
+    <Cards OnAllCardsGuessed="HandleAllCardsGuessed"/>
+}
+
+@code {
+    protected override void OnInitialized()
+    {
+        if(AppState.SheetId == null)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    public async Task HandleAllCardsGuessed()
+    {
+        await AppState.ReSetGuesses();
+    }
+
+}

@@ -1,0 +1,27 @@
+﻿@page "/";
+@using Vocab.Components
+@using Vocab.Models
+@using Vocab.State
+@inject IJSRuntime JS
+@inject AppState AppState
+
+@if (AppState.SheetId == null)
+{
+    <GoogleSheetForm />
+}
+else
+{
+    <Cards />
+}
+
+
+
+@code{
+    private bool _isInitialized = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await AppState.InitializeAsync();
+        _isInitialized = true;
+
+    }   
+}
