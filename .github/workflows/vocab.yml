@@ -1,0 +1,55 @@
+name : Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs: 
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    env:
+      ACR_NAME: vocab
+      IMAGE_NAME: vocab
+      TAG: latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_APP_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          client-secret: ${{ secrets.AZURE_PASSWORD }}
+
+      - name: Log in to Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR_NAME }}.azurecr.io
+          username: ${{ secrets.AZURE_APP_ID }}
+          password: ${{ secrets.AZURE_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with: 
+          context: .
+          push: true
+          tags: ${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+
+      - name: Update Azure Container App
+        run: |
+          az containerapp update \
+            --name testing-azure-vocab-app \
+            --resource-group Default-Web-WestUS \
+            --image "${{ env.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME}}:${{ env.TAG }}"
+        env:
+          AZURE_APP_ID: ${{ secrets.AZURE_APP_ID }}
+          AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
