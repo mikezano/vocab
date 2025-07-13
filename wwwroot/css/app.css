@@ -2,6 +2,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
 
 
+#loading {
+    display: grid;
+    place-content: center;
+
+    & ion-icon{
+        font-size:10rem;
+        animation: spin 1s linear infinite;
+    }   
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
 html, body {
     font-family: 'Nerko One', cursive;
     background-color: #f2f2f2;
